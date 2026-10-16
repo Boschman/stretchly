@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import 'chai/register-should'
 import { join } from 'path'
 import NaturalBreaksManager from '../app/utils/naturalBreaksManager'
@@ -68,7 +69,22 @@ describe('naturalBreaksManager', function () {
     naturalBreaksManager.timer.should.be.equal(timer)
   })
 
+  it('is idle beyond the break threshold only when the threshold is reached', () => {
+    vi.spyOn(naturalBreaksManager, 'idleTime', 'get').mockReturnValue(60000)
+    settings.set('breakIdleThreshold', 60000)
+    naturalBreaksManager.isIdleBeyondBreakThreshold.should.be.equal(true)
+    settings.set('breakIdleThreshold', 65000)
+    naturalBreaksManager.isIdleBeyondBreakThreshold.should.be.equal(false)
+  })
+
+  it('is never idle beyond the break threshold when it is 0', () => {
+    vi.spyOn(naturalBreaksManager, 'idleTime', 'get').mockReturnValue(600000)
+    settings.set('breakIdleThreshold', 0)
+    naturalBreaksManager.isIdleBeyondBreakThreshold.should.be.equal(false)
+  })
+
   afterEach(async () => {
+    vi.restoreAllMocks()
     naturalBreaksManager.stop()
     naturalBreaksManager = null
 

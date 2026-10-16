@@ -313,6 +313,10 @@ body[dir=rtl] input[type="range"] {
   margin: 0 13px 0 16px;
 }
 
+div:has(> input[type="range"]:disabled) {
+  opacity: 0.5;
+}
+
 /* https://developer.mozilla.org/en-US/docs/Learn/Forms/Advanced_form_styling#Selects_and_datalists */
 .has-select {
   display: inline-block;

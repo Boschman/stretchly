@@ -31,7 +31,9 @@ function formatTimeIn (milliseconds, locale, i18next, humanizeDuration) {
 }
 
 function formatUnitAndValue (unit, value, i18next) {
-  if (unit === 'seconds') {
+  if (parseFloat(value) === 0) {
+    return i18next.t('utils.off')
+  } else if (unit === 'seconds') {
     if (value < 60) {
       return i18next.t('utils.seconds', { count: parseInt(value) })
     } else {

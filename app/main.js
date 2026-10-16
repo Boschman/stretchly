@@ -785,14 +785,6 @@ function startMicrobreak () {
     return
   }
 
-  // Check if user has been idle for too long
-  const breakIdleThreshold = settings.get('breakIdleThreshold')
-  if (breakIdleThreshold > 0 && breakPlanner.naturalBreaksManager.idleTime >= breakIdleThreshold) {
-    log.info(`Stretchly: not starting Mini Break because user has been idle for ${breakPlanner.naturalBreaksManager.idleTime}ms (threshold: ${breakIdleThreshold}ms)`)
-    breakPlanner.nextBreak()
-    return
-  }
-
   const breakDuration = settings.get('microbreakDuration')
   const strictMode = settings.get('microbreakStrictMode')
   const postponesLimit = settings.get('microbreakPostponesLimit')
@@ -958,14 +950,6 @@ function startMicrobreak () {
 function startBreak () {
   if (breakWins) {
     log.warn('Stretchly: Long break already running, not starting Long break')
-    return
-  }
-
-  // Check if user has been idle for too long
-  const breakIdleThreshold = settings.get('breakIdleThreshold')
-  if (breakIdleThreshold > 0 && breakPlanner.naturalBreaksManager.idleTime >= breakIdleThreshold) {
-    log.info(`Stretchly: not starting Long Break because user has been idle for ${breakPlanner.naturalBreaksManager.idleTime}ms (threshold: ${breakIdleThreshold}ms)`)
-    breakPlanner.nextBreak()
     return
   }
 

@@ -44,6 +44,11 @@ class NaturalBreaksManager extends EventEmitter {
     }
   }
 
+  get isIdleBeyondBreakThreshold () {
+    const threshold = this.settings.get('breakIdleThreshold')
+    return threshold > 0 && this.idleTime >= threshold
+  }
+
   _checkIdleTime () {
     let lastIdleTime = 0
     this.timer = setInterval(() => {

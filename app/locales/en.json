@@ -182,6 +182,7 @@
     "remaining": "{{count}} remaining",
     "elapsed": "{{count}} elapsed",
     "inAbout": "in about {{count}}",
+    "off": "off",
     "none_one": "{{count}}",
     "none_other": "{{count}}",
     "percent_one": "{{count}} percent",

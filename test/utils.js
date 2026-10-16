@@ -76,6 +76,7 @@ describe('Times formatters', function () {
   })
 
   it('formats unit and value correctly', function () {
+    formatUnitAndValue('seconds', 0, i18next).should.equal('off')
     formatUnitAndValue('seconds', 30, i18next).should.equal('30 seconds')
     formatUnitAndValue('seconds', 1, i18next).should.equal('1 second')
     formatUnitAndValue('seconds', 60, i18next).should.equal('1 minute')

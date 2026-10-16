@@ -189,6 +189,15 @@ window.onload = async (e) => {
     }
   })
 
+  const monitorIdleTime = document.querySelector('#monitorIdleTime')
+  const updateBreakIdleThreshold = () => {
+    document.querySelector('#breakIdleThreshold').disabled = !monitorIdleTime.checked
+  }
+  updateBreakIdleThreshold()
+  if (!eventsAttached) {
+    monitorIdleTime.addEventListener('change', updateBreakIdleThreshold)
+  }
+
   document.querySelectorAll('input[type="radio"]').forEach(radio => {
     let value
     switch (radio.value) {

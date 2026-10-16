@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - CLI commands to postpone, skip and finish the current break
 - advanced preferences for custom break sounds
+- option to skip breaks when idle for longer than a set time
 
 ### Fixed
 - fix debug file and folder links when paths contain HTML special characters
