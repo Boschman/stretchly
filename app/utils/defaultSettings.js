@@ -36,6 +36,7 @@ module.exports = {
   ideas: true,
   naturalBreaks: true,
   naturalBreaksInactivityResetTime: 300000,
+  breakIdleThreshold: 0,
   allScreens: true,
   useIdeasFromSettings: false,
   language: 'en',
