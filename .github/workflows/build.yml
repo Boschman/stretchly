@@ -5,6 +5,9 @@ on:
     branches:
       - release
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -14,22 +17,19 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
       fail-fast: false
     steps:
-    - name: run on mac
-      if: matrix.os == 'macos-latest'
-      run: sudo xcode-select -s /Library/Developer/CommandLineTools      
     - name: run on linux
       if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install libarchive-tools
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '20.18.1'
-    - run: pip install setuptools
-    - run: npm install npm -g
-    - run: npm install
-    - run: node_modules/.bin/electron-builder build
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libarchive-tools pkg-config
+    - name: Checkout
+      uses: actions/checkout@v6
+    - name: Setup build environment
+      uses: ./.github/actions/setup-build
+    - name: Build packages
+      run: node_modules/.bin/electron-builder build
       env:
         GH_TOKEN: ${{ secrets.github_token }}
+    - name: Verify macOS app signatures
+      if: runner.os == 'macOS'
+      uses: ./.github/actions/verify-macos-signatures

@@ -47,7 +47,7 @@
       "graphiteCrystal": "Graphite crystal",
       "coffeeKisses": "Coffee kisses",
       "ticToc": "Tic toc",
-      "menubarIcon": "Icon ng Menubar:",
+      "trayIcon": "Icon ng Menubar:",
       "colour": "Colour",
       "monochrome": "Monochrome",
       "invertedMonochrome": "Inverted Monochrome",
@@ -71,7 +71,7 @@
     },
     "heart": {
       "loveStretchly": "Mahal mo ang iyong Stretchly?",
-      "becomePatron": "Maging isang Patron",
+      "becomeContributor": "Maging isang Patron",
       "alreadyContributor": "Contributor na ako",
       "authenticateUsing": "Patotohanan gamit ang:",
       "contributorPreferences": "Mga Kagustuhan sa Contributor",
@@ -127,7 +127,7 @@
     "postponeFor": "Ipagpaliban para sa:",
     "maxPostpones": "Pinakamataas na Pagpaliban:",
     "longBreaks": "Mga Matagalang Pahinga:",
-    "pauseUntilMoring": "Ihinto muna hangang umaga:",
+    "pauseUntilMorning": "Ihinto muna hangang umaga:",
     "pauseUntil": "Ihinto muna hangang:",
     "pauseUntilMorningInfo": "Tukuyin hanggang anong oras dapat sandaling ihinto ang 'Ihinto muna hanggang umaga'.",
     "welcomeWindow": "Welcome window:",
@@ -200,8 +200,8 @@
     "nextMiniBreak": "Susunod na Mabilisang Pahinga",
     "appExclusion": "Panuntunan sa pagbubukod ng app",
     "resuming": "Ipinagpapatuloy",
-    "afterMiniBreak_other": "pagkatapos ng {{count}} na Mabilisang Pahinga",
-    "afterMiniBreak_one": "pagkatapos ng {{count}} na Mabilisang Pahinga"
+    "afterMiniBreak_one": "pagkatapos ng {{count}} na Mabilisang Pahinga",
+    "afterMiniBreak_other": "pagkatapos ng {{count}} na Mabilisang Pahinga"
   },
   "miniBreakIdeas": {
     "aaa": {

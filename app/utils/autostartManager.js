@@ -1,54 +1,62 @@
-const log = require('electron-log/main')
+import log from 'electron-log/main.js'
+import AutoLaunch from 'auto-launch'
+import FlatpakPortalManager from './flatpakPortalManager.js'
+import { insideFlatpak, insideWindowsStore } from './utils.js'
 
 class AutostartManager {
   constructor ({
-    platform,
-    windowsStore,
-    app
+    app,
+    settings
   }) {
-    this.platform = platform
-    this.windowsStore = windowsStore
     this.app = app
+
+    this.isFlatpak = insideFlatpak()
+    this.isWindowsStore = insideWindowsStore()
+
+    if (this.isFlatpak) {
+      this.flatpakPortalManager = new FlatpakPortalManager(settings)
+    } else if (process.platform === 'linux') {
+      this.nativeAutoLauncher = new AutoLaunch({ name: 'stretchly' })
+    } else if (this.isWindowsStore) {
+      this.windowsStoreAutoLauncher = new AutoLaunch({
+        name: 'Stretchly',
+        path: '33881JanHovancik.stretchly_24fg4m0zq65je!Stretchly',
+        isHidden: true
+      })
+    }
   }
 
-  setAutostartEnabled (value) {
-    if (this.platform === 'linux') {
-      value ? this._linuxAutoLaunch.enable() : this._linuxAutoLaunch.disable()
-    } else if (process.platform === 'win32' && process.windowsStore) {
-      value ? this._windowsStoreAutoLaunch.enable() : this._windowsStoreAutoLaunch.disable()
+  async setAutostartEnabled (value) {
+    log.info(`Stretchly: setting autostart to ${value} on ${process.platform}${this.isWindowsStore ? ' (Windows Store)' : ''}${this.isFlatpak ? ' (Flatpak)' : ''}`)
+
+    if (this.isFlatpak) {
+      await (value ? this.flatpakPortalManager.enableAutostart() : this.flatpakPortalManager.disableAutostart())
+    } else if (process.platform === 'linux') {
+      await (value ? this.nativeAutoLauncher.enable() : this.nativeAutoLauncher.disable())
+    } else if (this.isWindowsStore) {
+      await (value ? this.windowsStoreAutoLauncher.enable() : this.windowsStoreAutoLauncher.disable())
     } else {
       this.app.setLoginItemSettings({ openAtLogin: value })
     }
-    log.info(`Stretchly: setting autostart to ${value} on ${this.platform}${this.platform === 'win32' && this.windowsStore ? ' (Windows Store)' : ''}`)
   }
 
   async autoLaunchStatus () {
-    if (this.platform === 'linux') {
-      return await this._linuxAutoLaunch.isEnabled()
-    } else if (this.platform === 'win32' && this.windowsStore) {
-      return await this._windowsStoreAutoLaunch.isEnabled()
+    if (this.isFlatpak) {
+      return await this.flatpakPortalManager.isAutostartEnabled()
+    } else if (process.platform === 'linux') {
+      return await this.nativeAutoLauncher.isEnabled()
+    } else if (this.isWindowsStore) {
+      return await this.windowsStoreAutoLauncher.isEnabled()
     } else {
-      return await this.app.getLoginItemSettings().openAtLogin
+      return this.app.getLoginItemSettings().openAtLogin
     }
   }
 
-  get _linuxAutoLaunch () {
-    const AutoLaunch = require('auto-launch')
-    const stretchlyAutoLaunch = new AutoLaunch({
-      name: 'stretchly'
-    })
-    return stretchlyAutoLaunch
-  }
-
-  get _windowsStoreAutoLaunch () {
-    const AutoLaunch = require('auto-launch')
-    const stretchlyAutoLaunch = new AutoLaunch({
-      name: 'Stretchly',
-      path: '33881JanHovancik.stretchly_24fg4m0zq65je!Stretchly',
-      isHidden: true
-    })
-    return stretchlyAutoLaunch
+  disconnect () {
+    if (this.flatpakPortalManager) {
+      this.flatpakPortalManager.disconnect()
+    }
   }
 }
 
-module.exports = AutostartManager
+export default AutostartManager

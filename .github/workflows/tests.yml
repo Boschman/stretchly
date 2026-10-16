@@ -2,6 +2,9 @@ name: Run tests
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -12,14 +15,11 @@ jobs:
       fail-fast: false
 
     steps:
-    - name: run on mac
-      if: matrix.os == 'macos-latest'
-      run: sudo xcode-select -s /Library/Developer/CommandLineTools
     - name: Setup DBUS environment
       if: matrix.os == 'ubuntu-latest'
       run: |
         export DISPLAY=:0
-        sudo apt install dbus-x11
+        sudo apt update && sudo apt install -y dbus-x11
         machineId=$(cat /var/lib/dbus/machine-id)
         mkdir -p /home/runner/.dbus
         mkdir -p /home/runner/.dbus/session-bus/
@@ -34,28 +34,24 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: cat /home/runner/.dbus/session-bus/$(cat /var/lib/dbus/machine-id)-0
     - name: Set Timezone
-      uses: szenius/set-timezone@v1.1
+      uses: szenius/set-timezone@v2.0
       with:
         timezoneLinux: Europe/Amsterdam
         timezoneMacos: Europe/Amsterdam
         timezoneWindows: W. Europe Standard Time
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20.18.1'
-    - run: pip install setuptools
-    - run: npm install npm -g
-    - run: npm install
+    - name: Checkout
+      uses: actions/checkout@v6
+    - name: Setup build environment
+      uses: ./.github/actions/setup-build
     - name: Install missing usocket
       if: matrix.os == 'ubuntu-latest'
       run: npm install usocket
-    - run: npm run coverage
+    - name: Rebuild native modules for Node.js
+      run: npm rebuild node-desktop-idle-v2
+    - name: Run tests with coverage
+      run: npm run coverage
       env:
         CI: true
         DISPLAY: ':0'
     - name: Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4

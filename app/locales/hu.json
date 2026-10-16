@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Szünet elhalasztása",
     "skip": "Szünet kihagyása",
-    "title": "Itt az ideje szünetet tartani!"
+    "title": "Itt az ideje szünetet tartani!",
+    "finish": "Szünet befejezése"
   },
   "preferences": {
     "title": "Stretchly Beállítások",
@@ -82,13 +83,18 @@
       "crystalGlass": "Üveg csilingelés",
       "windChime": "Szélcsengő",
       "ticToc": "Tikk-takk",
-      "menubarIcon": "Menüsáv ikon:",
+      "trayIcon": "Menüsáv ikon:",
       "colour": "Színes",
       "monochrome": "Egyszínű",
       "invertedMonochrome": "Fordított egyszínű",
       "snowWhite": "Hófehér",
       "transparentMode": "Áttetszőség bekapcsolása",
-      "reverie": "Álmodozás"
+      "reverie": "Álmodozás",
+      "silence": "Csend",
+      "trayIconStyleLabel": "Stílus:",
+      "trayIconStyleDefault": "Alapértelmezett",
+      "trayIconStyleTime": "Hátralévő idő a szünetig",
+      "trayIconStyleProgress": "Szünet óta eltelt idő"
     },
     "about": {
       "tagline": "A szünet emlékeztető alkalmazás",
@@ -106,8 +112,8 @@
     "heart": {
       "loveStretchly": "Szereted a Stretchlyt?",
       "desc1": "A számítógép használat közben tartott rendszeres szünetek tudományosan bizonyítottan fontosak a testi és szellemi jólét fenntartásához.",
-      "desc2": "A Stretchly alkalmazás ingyenes, de támogathatsz minket, hogy továbbra is fejleszteni tudjuk a Stretchly-t és egyéb ingyenes szoftvereinket.",
-      "becomePatron": "Legyél támogató (Patreon)",
+      "desc2": "A Stretchly alkalmazás ingyenes, de támogathatsz minket, hogy továbbra is fejleszteni tudjuk a Stretchlyt és egyéb ingyenes szoftvereinket.",
+      "becomeContributor": "Legyél támogató (Patreon)",
       "alreadyContributor": "Már támogató vagyok",
       "authenticateUsing": "Azonosítás a következővel:",
       "contributorPreferences": "Támogatói beállítások",
@@ -132,15 +138,15 @@
     "postponeFor": "Elhalasztás eddig:",
     "maxPostpones": "Elhalasztható ennyiszer:",
     "longBreaks": "Hosszú szünetek:",
-    "pauseUntilMoring": "Felfüggesztés reggelig:",
+    "pauseUntilMorning": "Felfüggesztés reggelig:",
     "pauseUntil": "Szüneteltetés eddig:",
     "pauseUntilMorningInfo": "Állítsd be, hogy a 'Felfüggesztés reggelig' hány óráig függessze fel a szüneteket.",
     "welcomeWindow": "Üdvözlő ablak:",
     "showWelcomeWindow": "Üdvözlő ablak megjelenítése a következő indításkor",
     "sounds": "Hangok:",
     "volume": "Hangerő:",
-    "miniBreakStartSound": "Hang lejátszása a Rövid szünetek kezdetekor is",
-    "longBreakStartSound": "Hang lejátszása a Hosszú szünetek kezdetekor is",
+    "miniBreakStartSound": "Hang a Rövid szünetek kezdetekor",
+    "longBreakStartSound": "Hang a Hosszú szünetek kezdetekor",
     "naturalBreaks": "Természetes szünetek:",
     "naturalBreaksInfo": "Ha a Távollét naplózása engedélyezve van a Beállítások ablakban, itt megadhatod, hogy mennyi idő eltelte után legyen a visszaszámlálás szüneteltetve.",
     "pauseAfter": "Szüneteltetés ezután:",
@@ -157,7 +163,7 @@
     "3": "Negyedik monitor",
     "showBreaksAsRegularWindowsTitle": "Ablak üzemmód:",
     "showTrayIcon": "Tálca ikon megjelenítése",
-    "toShowTrayIcon": "Mutassa a Stretcly ikont a tálcán",
+    "toShowTrayIcon": "Mutassa a Stretchly ikont a tálcán",
     "showCurrentTimeInBreaks": "Mutassa a jelenlegi időt a szünet ablakban",
     "screen": "Monitor a szünetekhez:",
     "screenInfo": "Ha a szünetek megjelenítése az összes monitoron nincs engedélyezve, kiválaszthatod, hogy melyik monitoron szeretnéd a szüneteket megjeleníteni.",
@@ -189,7 +195,8 @@
     "hours_one": "{{count}} óra",
     "hours_other": "{{count}} óra",
     "remaining": "{{count}} van hátra",
-    "inAbout": "kb {{count}} múlva"
+    "inAbout": "kb {{count}} múlva",
+    "elapsed": "{{count}} eltelt"
   },
   "process": {
     "newVersionAvailable": "Új verzió érhető el!"
@@ -283,7 +290,7 @@
       "text": "Rázd meg a kezeidet egy kis megkönnyebbülésért."
     },
     "abf": {
-      "text": "Egyenként érintsd a többi ujjad hegyét a hüvelykujjad hegyéhez úgy, hogy O-alakot formáljanak."
+      "text": "Egyesével érintsd össze a hüvelykujjad hegyét a többi ujjad hegyével úgy, hogy O-alakot formáljanak."
     },
     "aas": {
       "text": "Emeld fel a jobb karod, nyújtsd a fejed fölött balra, és tartsd így 10 másodpercig. Ismételd meg a másik oldalra is."
@@ -430,7 +437,7 @@
     },
     "aal": {
       "title": "Aktív megbeszélések",
-      "text": "Mit szólnál a megbeszélések áthelyezéséhez a konferenciateremből az előcsarnokba, vagy a szabadba? A gyaloglás nemcsak kalóriákat éget, de még az együttműködés érzését is elősegítheti."
+      "text": "Mit szólnál a megbeszélések áthelyezéséhez a tárgyalóból az előtérbe? A gyaloglás nemcsak kalóriákat éget, de még az együttműködés érzését is elősegítheti."
     },
     "aax": {
       "title": "Pulzus",
@@ -507,6 +514,10 @@
     "abf": {
       "title": "Tenyerezés",
       "text": "Asztalnál ülve könyökölj az asztalra, annak széléhez közel. Engedd a testsúlyodat előre és takard el a szemeidet a kezeiddel. Hunyd le a szemed és lélegezz lassan az orrodon keresztül egy pár másodpercig. Folytasd a mély lélegzetvételeket."
+    },
+    "abj": {
+      "title": "Túlterhelt?",
+      "text": "Próbáld ki az 5-4-3-2-1 technikát: Nevezz meg 5 dolgot, amit láthatsz, 4 dolgot, amit megtapinthatsz, 3 dolgot, amit hallhatsz, 2 dolgot, amit megszagolhatsz, és 1 dolgot, amit megízlelhetsz."
     }
   }
 }

@@ -1,5 +1,25 @@
+html,
+body {
+  height: 100%;
+}
+
+* {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+::selection {
+  background: transparent;
+}
+
+body {
+  overflow: hidden;
+}
+
 .breaks {
   align-items: center;
+  box-sizing: border-box;
   color: #FFFFFF;
   display: grid;
   font-family: 'Noto Sans Light', 'Noto Sans Arabic Light',
@@ -10,6 +30,12 @@
   font-weight: 300;
   grid-template: 85vh 10vh / 100px auto 100px;
   justify-items: center;
+  min-height: 100%;
+}
+
+body.break-health-mode {
+  box-shadow: var(--break-health-shadow, none);
+  transition: box-shadow 450ms ease-out;
 }
 
 .breaks > * {
@@ -47,10 +73,6 @@
   font-size: 18px;
   letter-spacing: 0.26px;
   line-height: 18px;
-}
-
-.breaks > :nth-child(2) > a {
-  display: none;
 }
 
 .breaks > :nth-child(2) > a:hover {
@@ -109,6 +131,7 @@ body[dir=rtl] .breaks > :nth-child(2) > a img {
 
 .breaks > :last-child {
   bottom: 12px;
+  font-size: 28px;
   position: absolute;
   right: 12px;
 }

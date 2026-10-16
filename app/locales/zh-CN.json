@@ -28,7 +28,8 @@
   "break": {
     "postpone": "延后此次休息",
     "skip": "跳过此次休息",
-    "title": "该休息一下了！"
+    "title": "该休息一下了！",
+    "finish": "完成本次休息"
   },
   "preferences": {
     "title": "Stretchly 偏好设置",
@@ -65,7 +66,7 @@
       "showNotificationBeforeLongBreak": "休息前弹出通知",
       "enablePostponeLong": "允许延后休息",
       "strictMode": "严格模式：",
-      "strictModeInfo": "「严格模式」下不能跳过任何休息类型，其目的是协助您遵循休息规则。",
+      "strictModeInfo": "「严格模式」下不能跳过任何休息类型，目的是帮助自律。",
       "enableStrictMini": "启用「小憩」的严格模式",
       "enableStrictLong": "启用「休息」的严格模式",
       "cantDisableBoth": "不能同时停用两种休息类型"
@@ -83,12 +84,17 @@
       "crystalGlass": "水晶玻璃",
       "windChime": "风铃",
       "ticToc": "滴答",
-      "menubarIcon": "通知栏图标：",
+      "trayIcon": "通知栏图标：",
       "colour": "彩色",
       "monochrome": "单色",
       "invertedMonochrome": "反转单色",
       "snowWhite": "纯白雪花",
-      "reverie": "白日梦"
+      "reverie": "白日梦",
+      "silence": "沉默",
+      "trayIconStyleLabel": "样式：",
+      "trayIconStyleDefault": "默认",
+      "trayIconStyleTime": "休息时间",
+      "trayIconStyleProgress": "休息进度"
     },
     "about": {
       "tagline": "休息提醒应用",
@@ -107,7 +113,7 @@
       "loveStretchly": "喜欢 Stretchly?",
       "desc1": "科学研究表明，使用电脑时定时休息有利于身心健康。",
       "desc2": "Stretchly 是免费的。但是您可以通过捐赠来帮助我们改进 Stretchly 并发布其他免费软件。",
-      "becomePatron": "捐助",
+      "becomeContributor": "捐助",
       "alreadyContributor": "我已经是贡献者了",
       "authenticateUsing": "通过下列方法认证：",
       "contributorPreferences": "贡献者偏好设置",
@@ -137,7 +143,7 @@
     "postponeFor": "延后多久：",
     "maxPostpones": "最大延后次数：",
     "longBreaks": "休息：",
-    "pauseUntilMoring": "暂停至早晨：",
+    "pauseUntilMorning": "暂停至早晨：",
     "pauseUntil": "暂停至：",
     "pauseUntilMorningInfo": "指定「暂停至早晨」的具体时间。",
     "welcomeWindow": "欢迎窗口：",
@@ -151,8 +157,8 @@
     "breakWindowHeight": "高：",
     "sounds": "音效：",
     "volume": "音量：",
-    "miniBreakStartSound": "在小憩开始时播放休息结束的音效",
-    "longBreakStartSound": "在休息开始时播放休息结束的音效",
+    "miniBreakStartSound": "小憩开始时播放的音效",
+    "longBreakStartSound": "休息开始时播放的音效",
     "naturalBreaks": "自然休息：",
     "naturalBreaksInfo": "若在偏好设置中启用监视空闲时间，您可以指定什么时候暂停倒数。",
     "pauseAfter": "多久后暂停：",
@@ -162,18 +168,18 @@
     "system": "跟随系统",
     "screen": "监控休息时间：",
     "showBreaksAsRegularWindows": "休息画面设为常规窗口",
-    "showBreaksAsRegularWindowsInfo": "启用后，休息画面可被聚焦，不再置顶并出现在任务栏中。",
+    "showBreaksAsRegularWindowsInfo": "启用后，休息窗口可被聚焦，不再始终置顶并将出现在任务栏中。",
     "showBreaksAsRegularWindowsTitle": "作为常规窗口：",
     "cursor": "跟随光标",
     "primary": "主显示器",
-    "showOnMonitor": "显示休息时间",
-    "screenInfo": "禁用所有显示器显示休息画面，你可以选择在哪个显示器显示休息画面。",
+    "showOnMonitor": "显示休息画面于",
+    "screenInfo": "禁用所有显示器显示休息画面时，你可以选择在哪个显示器显示休息画面。",
     "timeToBreakInTray": "休息时间",
     "showTimeToBreakInTray": "在托盘图标显示下次休息时间",
     "showCurrentTimeInBreaks": "在休息画面显示当前时间",
     "currentTimeInBreaks": "当前时间",
-    "showTrayIcon": "显示菜单栏图标",
-    "toShowTrayIcon": "在菜单栏中显示 Stretchly 图标"
+    "showTrayIcon": "显示托盘图标",
+    "toShowTrayIcon": "在托盘中显示 Stretchly 图标"
   },
   "utils": {
     "none_other": "{{count}}",
@@ -184,12 +190,7 @@
     "hours_other": "{{count}} 时",
     "remaining": "还有 {{count}}",
     "inAbout": "大约 {{count}}后",
-    "oclock_one": "{{count}} 点钟",
-    "seconds_one": "{{count}} 秒",
-    "hours_one": "{{count}} 时",
-    "none_one": "{{count}}",
-    "percent_one": "{{count}} %",
-    "minutes_one": "{{count}} 分"
+    "elapsed": "已经过去了 {{count}}"
   },
   "process": {
     "newVersionAvailable": "有新的版本！"
@@ -209,8 +210,7 @@
     "nextMiniBreak": "下次小憩",
     "afterMiniBreak_other": "{{count}} 次小憩后",
     "resuming": "继续",
-    "appExclusion": "应用程序排除规则",
-    "afterMiniBreak_one": "{{count}} 次小憩后"
+    "appExclusion": "应用程序排除规则"
   },
   "miniBreakIdeas": {
     "aaa": {
@@ -507,6 +507,10 @@
     "abi": {
       "text": "闭上眼睛，想象自己身处一个平静、令人放松的地方，比如海滩或森林，专注于那个环境中的景象、声音和感觉。",
       "title": "创造性想象"
+    },
+    "abj": {
+      "title": "压力太大了？",
+      "text": "试试 5-4-3-2-1 着陆法：找出你能看到的 5 样东西，你能摸到的 4 样东西，你能听到的 3 样东西，你能闻到的 2 样东西，和 1 样你可以尝到的东西。"
     }
   }
 }

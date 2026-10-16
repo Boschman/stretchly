@@ -34,19 +34,23 @@ describe('pauseBreaksShortcut', () => {
 
   describe('onShortcut', () => {
     it('calls pauseBreaks for pauseBreaksFor30MinutesShortcut', () => {
+      const log = { info: vi.fn() }
       const pauseBreaks = vi.fn()
 
       onShortcut({
         name: 'pauseBreaksFor30MinutesShortcut',
         settings: null,
         breakPlanner: null,
-        functions: { pauseBreaks }
+        functions: { pauseBreaks },
+        log
       })
 
       expect(pauseBreaks).toHaveBeenCalledWith(30 * 60 * 1000)
+      expect(log.info).toHaveBeenCalledWith('Stretchly: pausing breaks by shortcut (pauseBreaksFor30MinutesShortcut)')
     })
 
     it('for pauseBreaksUntilMorningShortcut calls pauseBreaks with correct interval', () => {
+      const log = { info: vi.fn() }
       const pauseBreaks = vi.fn()
       const settings = { get: () => 6 }
 
@@ -54,7 +58,8 @@ describe('pauseBreaksShortcut', () => {
         name: 'pauseBreaksUntilMorningShortcut',
         settings,
         breakPlanner: null,
-        functions: { pauseBreaks }
+        functions: { pauseBreaks },
+        log
       })
 
       expect(pauseBreaks).toHaveBeenCalled()
@@ -83,7 +88,7 @@ describe('pauseBreaksShortcut', () => {
           log
         })
 
-        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next scheduled Break by shortcut')
+        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next scheduled break by shortcut')
         expect(skipToBreak).toHaveBeenCalled()
         expect(skipToMicrobreak).not.toHaveBeenCalled()
         expect(pauseBreaks).not.toHaveBeenCalled()
@@ -104,7 +109,7 @@ describe('pauseBreaksShortcut', () => {
           log
         })
 
-        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next scheduled Break by shortcut')
+        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next scheduled break by shortcut')
         expect(skipToBreak).not.toHaveBeenCalled()
         expect(skipToMicrobreak).toHaveBeenCalled()
         expect(pauseBreaks).not.toHaveBeenCalled()
@@ -145,7 +150,7 @@ describe('pauseBreaksShortcut', () => {
           log
         })
 
-        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Long Break by shortcut')
+        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Long break by shortcut')
         expect(skipToBreak).toHaveBeenCalled()
         expect(pauseBreaks).not.toHaveBeenCalled()
       })
@@ -165,7 +170,7 @@ describe('pauseBreaksShortcut', () => {
           log
         })
 
-        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Mini Break by shortcut')
+        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Mini break by shortcut')
         expect(skipToMicrobreak).toHaveBeenCalled()
         expect(pauseBreaks).not.toHaveBeenCalled()
       })
@@ -173,6 +178,7 @@ describe('pauseBreaksShortcut', () => {
 
     describe('pauseBreaksToggleShortcut', () => {
       it('pauses breaks indefinitely', () => {
+        const log = { info: vi.fn() }
         const pauseBreaks = vi.fn()
         const breakPlanner = { isPaused: false }
 
@@ -180,13 +186,16 @@ describe('pauseBreaksShortcut', () => {
           name: 'pauseBreaksToggleShortcut',
           settings: null,
           breakPlanner,
-          functions: { pauseBreaks }
+          functions: { pauseBreaks },
+          log
         })
 
         expect(pauseBreaks).toHaveBeenCalledWith(1)
+        expect(log.info).toHaveBeenCalledWith('Stretchly: pausing breaks by shortcut')
       })
 
       it('resumes breaks when they are paused', () => {
+        const log = { info: vi.fn() }
         const resumeBreaks = vi.fn()
         const pauseBreaks = vi.fn()
         const breakPlanner = { isPaused: true }
@@ -195,11 +204,13 @@ describe('pauseBreaksShortcut', () => {
           name: 'pauseBreaksToggleShortcut',
           settings: null,
           breakPlanner,
-          functions: { resumeBreaks, pauseBreaks }
+          functions: { resumeBreaks, pauseBreaks },
+          log
         })
 
         expect(resumeBreaks).toHaveBeenCalledWith(false)
         expect(pauseBreaks).not.toHaveBeenCalled()
+        expect(log.info).toHaveBeenCalledWith('Stretchly: resuming breaks by shortcut')
       })
     })
   })

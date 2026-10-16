@@ -26,23 +26,35 @@ The latest official **installers** and **portable versions** for macOS, Windows 
 
 ### macOS
 
-It is recommended to install *Stretchly* with [Homebrew](https://brew.sh/) by running the folowing command.
+Requires macOS Ventura (13) or later.
+
+It is recommended to install *Stretchly* with [Homebrew tap](https://github.com/hovancik/homebrew-stretchly) by running the following command.
 See [Application Signing](#application-signing) for details.
 ```zsh
-brew update && brew install --cask --no-quarantine stretchly
+brew install --cask hovancik/stretchly/stretchly
 ```
+
+> Note for macOS users: Homebrew recently disabled the `--no-quarantine` flag. As a result, macOS Gatekeeper may block the app on its first launch, showing an "unidentified developer" warning. To bypass this, go to `System Settings > Privacy & Security`, scroll down, and click Open Anyway next to the Stretchly alert. Alternatively, locate the app in Finder, Control-click (or Right-click) its icon, and select Open.
 
 When upgrading, run the following command.
 Don't forget to Quit Stretchly, first.
 ```zsh
-brew update && brew upgrade --cask
+brew upgrade --cask hovancik/stretchly/stretchly
 ```
+
+To uninstall:
+```zsh
+brew uninstall --cask hovancik/stretchly/stretchly
+brew untap hovancik/stretchly
+```
+
+> **Note:** A `stretchly` cask also exists in the default `homebrew/cask` tap. It is deprecated and [scheduled to be disabled on September 1, 2026](https://github.com/Homebrew/homebrew-cask/blob/main/Casks/s/stretchly.rb) because the app is unsigned and fails Homebrew's Gatekeeper check. Until then, the bare name `stretchly` is ambiguous — always use the fully qualified `hovancik/stretchly/stretchly` to get this tap's version.
 
 If you're using [Alfred](https://www.alfredapp.com) or [Raycast](https://www.raycast.com/) on macOS you can use this [Alfred Workflow](https://github.com/KingOfSpades/stretchFred) or [Raycast Extension](https://www.raycast.com/u-ran/stretchly) to interact with Stretchly.
 
 #### Application Signing
 
-*Stretchly* is not signed (due to its costs and me not owning supported Apple device) so you will need to use a workaround for the first run. The workaround
+*Stretchly* is only ad-hoc signed (due to its costs and me not owning supported Apple device) so you will need to use a workaround for the first run. The workaround
 depends on if you're running an Intel or Apple Silicon chip.
 
 - **Intel Chips**: [Open a Mac app from an unidentified developer](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac).
@@ -50,13 +62,6 @@ depends on if you're running an Intel or Apple Silicon chip.
 
 ```bash
 sudo xattr -r -d com.apple.quarantine /Applications/Stretchly.app
-```
-
-If you install via [Homebrew](https://brew.sh), you can use the `--no-quarantine` flag to automatically apply the correct
-workaround.
-
-```bash
-brew install --cask --no-quarantine stretchly
 ```
 
 Not sure which chip your computer has? [Here's how to tell](https://support.apple.com/en-us/HT211814).
@@ -109,6 +114,8 @@ sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 ```
 Read more [here](https://github.com/electron/electron/issues/17972). Depending on your distro, you probably want to do something similar to this, so the preferences are kept after reboot: Add `kernel.unprivileged_userns_clone=1` and `kernel.apparmor_restrict_unprivileged_userns=0` to `/etc/sysctl.d/00-local-userns.conf` and reboot.
 
+If you're on Wayland and you would like to be able to monitor idle time, you'll need to add your user to `input` group, with `sudo gpasswd --add $USER input` (depending on your distro) and logout/login to take an effect.
+
 ### Running from source
 
 To run *Stretchly* from source you will need [Node.js](https://nodejs.org/), ideally the one specified in `package.json`. Clone the repo, run `npm install` and then simply run `npm start` to start *Stretchly*.
@@ -127,15 +134,15 @@ When you run *Stretchly* for the first time, you are presented with a Welcome wi
 
 <img src="minibreak.png" height="340">
 
-By default, there is a 20 second Mini Break every 10 minutes and a 5 minute Long Break every 30 minutes (after 2 Mini Breaks).
+By default, there is a 20 second Mini break every 10 minutes and a 5 minute Long break every 30 minutes (after 2 Mini breaks).
 
 <img src="longbreak.png" height="340">
 
-You'll be notified 10 seconds before a Mini Break (and 30 seconds before a Long Break) so that you can prepare to pause your work.
+You'll be notified 10 seconds before a Mini break (and 30 seconds before a Long break) so that you can prepare to pause your work.
 
 <img src="notification.png" height="90">
 
-When a break starts, you can postpone it once for 2 minutes (Mini Breaks) or 5 minutes (Long Breaks). Then, after a specific time interval passes, you can skip the break. Both actions are available by clicking on the link at the bottom of window or by using the `Ctrl/Cmd + X` keyboard shortcut.
+When a break starts, you can postpone it once for 2 minutes (Mini breaks) or 5 minutes (Long breaks). Then, after a specific time interval passes, you can skip the break. Both actions are available by clicking on the link at the bottom of window or by using the `Ctrl/Cmd + X` keyboard shortcut.
 
 <img src="skip.png" height="340">
 
@@ -154,6 +161,8 @@ Clicking the *Stretchly* icon in your tray area will display the current status 
 ### Interact with stretchly from command line
 
 When a Stretchly instance is running, the `stretchly` command can be use to interact with it from the command line.
+
+The regular Windows installer adds `stretchly` to PATH, so commands can be run from a new terminal without specifying the full executable path.
 
 Type `stretchly help` to get a list of all commands and options available as well as some examples.
 
@@ -183,46 +192,83 @@ Some of the extra preferences are available in Contributor Preferences for [Cont
 
 Preferences marked with ![Not Reliable](https://img.shields.io/badge/Not_Reliable-β-yellow) might not work correctly and might break *Stretchly*. Use at own risk.
 
-**Note:** Before 1.0, Mini Breaks and Long Breaks were called Microbreaks and Breaks, respectively. To keep the upgrade smooth they still use that name in preferences file and in code.
+**Note:** Before 1.0, Mini breaks and Long breaks were called Microbreaks and Breaks, respectively. To keep the upgrade smooth they still use that name in preferences file and in code.
 
 #### Preferences editable in the app
 
 Here are the preferences editable via the app. If values in the app does not suite your style, you could edit them maually:
 
-- `microbreakDuration` - duration of Mini Break (ms)
-- `microbreakInterval` - interval of Mini Break (ms)
-- `breakDuration` - duration of Long Break (ms)
-- `breakInterval` - interval of Long Break (Mini Breaks)
-- `breakNotification` - show notification before Mini Break
-- `microbreakNotification` - show notification before Long Break
-- `microbreak` - enable Mini Breaks
-- `break` - enable Long Breaks
-- `microbreakStrictMode` - enable strict mode for Mini Breaks
-- `breakStrictMode` - enable strict mode for Long Breaks
-- `mainColor` - theme color code (for Long Breaks),
-- `miniBreakColor` - theme color code (for Mini Breaks),
+- `microbreakDuration` - duration of Mini break (ms)
+- `microbreakInterval` - interval of Mini break (ms)
+- `breakDuration` - duration of Long break (ms)
+- `breakInterval` - interval of Long break (Mini breaks)
+- `breakNotification` - show notification before Mini break
+- `microbreakNotification` - show notification before Long break
+- `microbreak` - enable Mini breaks
+- `break` - enable Long breaks
+- `microbreakStrictMode` - enable strict mode for Mini breaks
+- `breakStrictMode` - enable strict mode for Long breaks
+- `mainColor` - theme color code (for Long breaks),
+- `miniBreakColor` - theme color code (for Mini breaks),
 - `transparentMode` - show break windows as transparent
-- `audio` - sound theme name (for Long Breaks)
-- `miniBreakAudio` - sound theme name (for Mini Breaks)
+- `longBreakAudio` - sound theme name (for Long breaks)
+- `miniBreakAudio` - sound theme name (for Mini breaks)
 - `fullscreen` - show breaks in fullscreen mode
 - `ideas` - show break ideas
 - `naturalBreaks` - monitor idle time
 - `allScreens` - show breaks on all screens
 - `language` - language
 - `useMonochromeTrayIcon` - use monochrome icon
-- `useMonochromeInvertedTrayIcon` - use inverted monochrome icon
+- `trayIconStyle` - icon style for menubar: default, time to break, or progress to break
 - `silentNotifications` - enable sounds
 - `monitorDnd` - monitor DND mode
 - `checkNewVersion` - check for new versions
 
-#### Editing Break ideas
+#### Editing break ideas
 In the preferences file, change `useIdeasFromSettings: false,` to `useIdeasFromSettings: true,` and edit `breakIdeas` and `microbreakIdeas`.
 
 Note that when a new *Stretchly* version with new break ideas is out, your custom ideas will not be overwritten. You can reset break ideas to the latest defaults when you "Restore defaults" from Preferences window.
 
-#### Editing Break notification interval [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
+##### Using HTML in break ideas
+You can use simple HTML formatting in custom break ideas to enhance their appearance:
 
-In the preferences file, change `breakNotificationInterval: 30000,` to whatever value you want. 30000 is 30 seconds. Same goes for Mini Breaks.
+**Allowed HTML elements:**
+- `<a>` - links (only `https://` and `mailto:` URLs are allowed)
+- `<b>` - bold text
+- `<i>` - italic text
+- `<br>` - line breaks
+- `<p>` - paragraphs
+- `<h1>`, `<h2>`, `<h3>` - headings
+- `<img>` - local images (filenames only, see below)
+
+**Using links:**
+```json
+"breakIdeas": [
+  {
+    "data": ["<b>Stretch Time!</b>", "Try this <a href=\"https://example.com/stretch\">stretching routine</a>"],
+    "enabled": true
+  }
+]
+```
+
+**Using local images:**
+
+Place your images in the `images` folder inside Stretchly's user data directory (see Preferences → About → Debug info for the exact location). Then reference them by filename only:
+
+```json
+"breakIdeas": [
+  {
+    "data": ["<b>Desk Yoga</b>", "Try this pose: <img src=\"yoga-pose.png\" width=\"200\">"],
+    "enabled": true
+  }
+]
+```
+Supported image formats: PNG, JPEG, WebP, GIF. Only images from the local `images` folder are allowed - remote URLs will be blocked for security.
+
+Stretchly sanitizes all HTML to keep break windows secure by removing any unsupported tags or unsafe content.
+
+#### Editing break notification interval [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
+In the preferences file, change `breakNotificationInterval: 30000,` to whatever value you want. 30000 is 30 seconds. Same goes for Mini breaks.
 
 #### Editing sunrise time to pause breaks until morning
 In the preferences file you can set the `morningHour` setting to pause until that hour today or the next day
@@ -239,37 +285,62 @@ In the preferences file, you can edit `microbreakPostpone` and `breakPostpone` t
 #### New version notification [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 In the preferences file, set `notifyNewVersion: false,` to disable new version notification.
 
-#### Play sound at the start of the Break [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
-In the preferences file, set `microbreakStartSoundPlaying: true,` to start a Mini Break with a sound (The same sound will be played as at the end of the break). Same for `breakStartSoundPlaying`.
+#### Sounds at the start of breaks [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
+To configure the sound when a break starts, set for example `"miniBreakStartSound": "crystal-glass"`. Same for `longBreakStartSound`. Built-in values: `silence`, `crystal-glass`, `wind-chime`, `tic-toc`, `reverie`. Setting the value to `silence` means no sound will be played.
 
 #### Different sound for Mini and Long breaks
-To play different sound for Mini Breaks, set `miniBreakAudio` to desired value (`crystal-glass`, `silence`, `tic-toc`, `wind-chime`).
+To play different sound for Mini breaks, set `miniBreakAudio` to desired value (`crystal-glass`, `silence`, `tic-toc`, `wind-chime`).
+
+#### Custom sounds
+
+To use your own sounds, put WAV files in the `audio` folder inside Stretchly's user data directory. Open it from Preferences → About by pressing `Ctrl/Cmd + D` and clicking `audioFolder`.
+
+To replace a sound from Preferences, name your file `crystal-glass.wav`, `wind-chime.wav`, `tic-toc.wav`, or `reverie.wav`. For example, save it as `crystal-glass.wav` and select Crystal Glass. Stretchly will use your file whenever that sound plays, including previews. Delete the file to get the original sound back.
+
+You can also use your own filename, for example `my-sound.wav`. In the preferences file, set `"miniBreakAudio": "my-sound"` or `"longBreakAudio": "my-sound"`. The same works for `miniBreakStartSound` and `longBreakStartSound`. Leave out `.wav` in these settings. These sounds won't appear as new choices in Preferences. If you delete the file, change the setting back to a built-in sound.
+
+Filenames can contain letters (`a-z`, `A-Z`), numbers, dots, underscores, and hyphens. Only `.wav` files are supported. The `silence` option always stays silent.
 
 #### Different color theme for Mini and Long breaks
-To have different theme for Mini Breaks, set `miniBreakColor` to desired value, ie `#123456`.
+To have different theme for Mini breaks, set `miniBreakColor` to desired value, ie `#123456`.
 
 #### Natural breaks inactivity time [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 In the preferences file, set `naturalBreaksInactivityResetTime` to your preferred value (in milliseconds greater than than 20000ms). This is an idle time length, after which *Stretchly* breaks will be paused until the user resumes activity.
 
-#### Volume for break sounds [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
-In the preferences file, set `volume` to your preferred value. Default value is `1`, which is 100% volume. Set it, for example, to `0.61` for 61% volume.
+You can also set `naturalBreaksCheckInterval` in milliseconds: how often idle time is checked. A higher number means lower CPU and energy usage, but slightly less responsive detection. Default value is `2000` which is 2 seconds.
 
-#### Postpone/Finish Break Shortcut
-In the preferences file, set `endBreakShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/api/accelerator) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
+#### Do Not Disturb check interval
+In the preferences file, set `monitorDndCheckInterval` in milliseconds: how often Do Not Disturb status is checked. A higher number means lower CPU and energy usage, but slightly less responsive detection. On macOS and Linux this check can be relatively expensive, so increasing it can noticeably lower energy usage. Default value is `2000` which is 2 seconds.
+
+#### Volume for break sounds [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
+In the preferences file, set `volume` to your preferred value. Default value is `1`, which is 100% volume. Set it, for example, to `0.61` for 61% volume. This applies to both start and end break sounds.
+
+#### Postpone/finish break shortcut
+In the preferences file, set `endBreakShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/latest/tutorial/keyboard-shortcuts#accelerators) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
 
 If you'd like to disable the shortcut, set value to empty string `""`.
 
 Default value is `CmdOrCtrl+X`.
 
-#### Toggle Breaks Shortcut
+#### Manual finish break mode
+If you want breaks to wait for you to finish them manually instead of automatically when the countdown reaches zero, set:
 
-Toggling between Pause Breaks and running breaks.
+```
+"miniBreakManualFinish": true,
+"longBreakManualFinish": true
+```
 
-In the preferences file, set `pauseBreaksToggleShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/api/accelerator) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
+Once enabled, the break behaves normally until it reaches 100%, then the window switches to showing elapsed time since the break started. You must press the Finish button or use the `endBreakShortcut` to close the break.
+
+#### Toggle breaks shortcut
+
+Toggling between Pause breaks and running breaks.
+
+In the preferences file, set `pauseBreaksToggleShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/latest/tutorial/keyboard-shortcuts#accelerators) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
 
 If you'd like to disable the shortcut, set value to empty string `""`. That's the default value as well.
 
-#### Pause Breaks for Duration Shortcuts
+#### Pause breaks for duration shortcuts
 
 You can also set shortcuts to pause breaks for a specific duration by modifying the following values in the preferences file:
 
@@ -281,20 +352,22 @@ You can also set shortcuts to pause breaks for a specific duration by modifying 
 
 If you'd like to disable the shortcuts, set value to empty string `""`. That's the default value as well.
 
-#### Skip to the next Break Shortcut
+#### Skip to the next break shortcut
 
-In the preferences file, set `skipToNextScheduledBreakShortcut`, `skipToNextMiniBreakShortcut`, `skipToNextLongBreakShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/api/accelerator) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
+In the preferences file, set `skipToNextScheduledBreakShortcut`, `skipToNextMiniBreakShortcut`, `skipToNextLongBreakShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/latest/tutorial/keyboard-shortcuts#accelerators) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
 
 If you'd like to disable the shortcut, set value to empty string `""`. That's the default value as well.
 
-#### Reset Breaks Shortcut
+#### Reset breaks shortcut
 
-In the preferences file, set `resetBreaksShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/api/accelerator) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
+In the preferences file, set `resetBreaksShortcut` to your preferred value. We do not validate this input, so please check [Electron's documentation](https://www.electronjs.org/docs/latest/tutorial/keyboard-shortcuts#accelerators) for available values for key and modifier. When a given accelerator is already taken by other applications, this call will silently fail. This behavior is intended by operating systems, since they don't want applications to fight for global shortcuts.
 
 If you'd like to disable the shortcut, set value to empty string `""`. That's the default value as well.
 
 #### Appearance [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 In the preferences file, change `themeSource: 'system'` to either `'light'` or `'dark'` to always use the specified theme.
+
+In the preferences file, change `trayIconThemeSource: 'system'` to either `'light'` or `'dark'` to force the tray icon's light or dark variant instead of following the system theme. On Windows, `'system'` follows the Windows mode used by the taskbar. On macOS and Linux, it follows the same light/dark theme as the rest of Stretchly (the OS theme, or whatever `themeSource` is set to). On macOS this affects colour icons only; monochrome icons are tinted by the system.
 
 #### Break window color
 In the preferences file, change `mainColor` to whatever color you like.
@@ -312,12 +385,24 @@ To specify the size of the break window, set the value of `breakWindowHeight` an
 
 If you want Stretchly breaks to act as regular windows (have a titlebar, turn off always on top, be minimizable and focusable) set `showBreaksAsRegularWindows` to `true`.
 
+#### Show break countdown only on one screen
+
+By default, when breaks are shown on all screens (`allScreens: true`), the countdown and break idea are shown on every screen. If you'd rather keep the other screens blanked and show the countdown and idea on a single screen only, set `breakContentScreen` in the preferences file to one of:
+
+- `"all"` - show the content on all screens (default)
+- `"primary"` - show the content only on the primary screen
+- `"cursor"` - show the content only on the screen where the cursor is when the break starts
+- a screen index (e.g. `0`, `1`) - show the content only on that screen
+
+This option has no effect when `allScreens` is `false` or when `showBreaksAsRegularWindows` is `true`. Invalid values fall back to `"all"`.
+
 #### Pause/resume breaks only when specific command is running
 
 By editing `appExclusions` in preferences file, you can automatically control when Stretchly breaks are paused.
 
 If you want Stretchly to be paused when specific apps are running, you could have this value (breaks are paused when Skype or Atom are running):
 
+Linux
 ```
 "appExclusions": [
     {
@@ -331,8 +416,23 @@ If you want Stretchly to be paused when specific apps are running, you could hav
 ]
 ```
 
+Windows
+```
+"appExclusions": [
+    {
+        "rule": "pause",
+        "active": true,
+        "commands": [
+            "librewolf.exe",
+            "masseffectlauncher.exe"
+        ]
+    }
+]
+```
+
 If you want Stretchly to be running when specific apps are as well, you could have this value (breaks are paused when Skype or Atom are not running):
 
+Linux
 ```
 "appExclusions": [
     {
@@ -346,9 +446,25 @@ If you want Stretchly to be running when specific apps are as well, you could ha
 ]
 ```
 
-You can specify multiple values, (as `appExclusions` is array) and Stretchly will take the first one that is marked as `"active": true`. Multiple `commands` can be specified as well. Commands should be case sensitive, but seems like this is not consistent across platforms. Therefore, sometimes, going all lowercase might be needed (this was noticed on Windows).
+Windows
+```
+"appExclusions": [
+    {
+        "rule": "resume",
+        "active": true,
+        "commands": [
+            "librewolf.exe",
+            "masseffectlauncher.exe"
+        ]
+    }
+]
+```
 
-You can also specify `appExclusionsCheckInterval` in milliseconds: lower number means more often checks, but also higher CPU usage. Default value is `1000` which is 1 second.
+You can specify multiple values, (as `appExclusions` is array) and Stretchly will take the first one that is marked as `"active": true`. Multiple `commands` can be specified as well. Commands should be case sensitive, but seems like this is not consistent across platforms. Therefore, sometimes, going all lowercase might be needed (this was noticed on Windows). Commands can also be substrings, meaning a rule containing "exe" will trigger when there's any running processes that contains "exe" in its name or cmd properties.
+
+For Windows, note that paths not specified. This is because on Windows, the API we're using only checks the names of processes being run, which in the vast majority of cases is "process_name.exe". If you try to specify paths, it will not work.
+
+You can also specify `appExclusionsCheckInterval` in milliseconds: lower number means more often checks, but also higher CPU usage. Default value is `2000` which is 2 seconds.
 
 #### Pause breaks on Suspend/Lock ![Not Reliable](https://img.shields.io/badge/Not_Reliable-β-yellow)
 If you don't want to reset breaks once system is back from Suspend/Lock, set `pauseForSuspendOrLock` to `false`.
@@ -359,12 +475,11 @@ In case you have disabled showing of breaks on all monitors, you can specify whi
 - `"cursor"` - monitor where there is cursor
 - `"0"` (or `0`), `"1"`, `"2"` etc, where `"0"` is the first monitor returned by OS and so forth
 
-#### Show time to the next break in menubar icon [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences) ![Not Reliable](https://img.shields.io/badge/Not_Reliable-β-yellow)
-
-If you want Stretchly to show time to the next break in menubar icon set `timeToBreakInTray` to `true`.
-
 #### Show current time in breaks [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 To show current time in breaks, set the value of `currentTimeInBreaks` from `false` to `true`.
+
+#### Break Health Mode
+Inspired by the screen-edge vignette used in video games to indicate low health, this mode adds a visual indicator around the edges of your break screen. The effect starts subtle and grows more intense each time you skip or postpone a break, and fades back down when you let breaks complete naturally. To enable it, set `breakHealthMode` to `true`.
 
 #### Hide menubar/tray icon [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 To hide Stretchly icon in menubar/tray, set the value of `showTrayIcon` from `true` to `false`.
@@ -373,6 +488,31 @@ Note that this will disable graphical way of opening Stretchly Preferences. To a
 
 #### Show tray menu in Strict Mode
 If you want to show tray menu even while in Strict mode, set `showTrayMenuInStrictMode` to `true`.
+
+#### Show custom message in Preferences
+If you want to show custom message in Preferences, set `customPreferencesMessage` to string of your liking.
+
+This might be useful for corporate installations.
+
+#### Disable app update functionality
+If you want to disable functionality around app updates, set `disableAppUpdateFeatures` to `true`. This will make Stretchly not to check for new versions and hide related elements from the app. This value takes preference over `checkNewVersion` and `notifyNewVersion`.
+
+This might be useful for corporate installations.
+
+#### Hide location of preferences file in Debug info
+If you want to hide location of preferences file in Debug info, set `hidePreferencesFileLocation` to `true`.
+
+This might be useful for corporate installations.
+
+#### Hide Strict Mode preferences
+If you want to hide Strict Mode preferences section from the Preferences window, set `hideStrictModePreferences` to `true`.
+
+This might be useful for corporate installations.
+
+#### Set automatic start from congfig file
+If you want autostart to work based on the value from config file, set `openAtLogin`.
+
+This might be useful for corporate installations.
 
 ## Contributor Preferences
 
@@ -437,6 +577,8 @@ Feel free to join in the [development](https://github.com/hovancik/stretchly/blo
 
 Now you can clone the repo with `git clone https://github.com/hovancik/stretchly.git`. Change to the new created directory and run `npm i` to install node packages needed. If your system is running Python 3.12 and newer, you also need to install `setuptools`, for example with `pip install setuptools`, as `distutils` have been [deprecated](https://docs.python.org/3/library/distutils.html).
 
+Alternatively, open the repo in the included [Dev Container](https://containers.dev/) (`.devcontainer`). It is a minimal, hardened environment (non-root user, all Linux capabilities dropped, no forwarded ports) for editing code and running tests, which makes it a good fit for LLM coding agents. It is not meant for running the Stretchly GUI.
+
 Read on.
 
 ### Debugging
@@ -463,8 +605,10 @@ You can help to translate Stretchly on [Weblate](https://hosted.weblate.org/enga
 
 
 ## Known issues
-- idle time detection doesn't work on Wayland ([electron/electron#27912](https://github.com/electron/electron/issues/27912))
-- Windows Store build's autorstart is not working, so was disabled. You need to do it [manually](https://www.lifewire.com/change-startup-programs-windows-11-6823499).
+- On KDE Wayland, global shortcuts can appear configured but fail to work; see [electron/electron#42573](https://github.com/electron/electron/issues/42573). Use the tray menu and break controls, or quit Stretchly and restart with `stretchly --ozone-platform=x11`.
+- Windows Store build's autostart is not working, so was disabled. To use autostart, install Stretchly with the [regular installer](https://github.com/hovancik/stretchly/releases), or create a shortcut to Stretchly from `shell:AppsFolder` (Win+R) and move it to the `shell:startup` folder (Win+R).
+- The Snap build may fail to start on native Wayland. Start it with the X11 backend (`stretchly --ozone-platform=x11`) as a workaround. See [#1693](https://github.com/hovancik/stretchly/issues/1693).
+- Wayland multi-display window placement issue puts all break windows on one monitor; start with X11 backend (`stretchly --ozone-platform=x11`) if needed. See [electron/electron#48749](https://github.com/electron/electron/issues/48749).
 
 ### MacOS
 - users experiencing their Dock hiding after a break, requiring command + tab or a mouse click to get focus back, check System Preferences > Users & Groups > {User} > Login Items. If Hide is checked for Stretchly, uncheck it, it should solve the issue.
@@ -545,6 +689,9 @@ You can help to translate Stretchly on [Weblate](https://hosted.weblate.org/enga
 - Lorenzo García Rivera, @lorenzogrv, [lorenzogrv.tech](https://lorenzogrv.tech)
 - Aleh, [@alehpa](https://github.com/alehpa)
 - Philip Wintersteiner, [@Wikiwix](https://github.com/wikiwix)
+- Steven Cai, [@stevencaiOR](https://github.com/stevencaiOR)
+- Zhekai Jiang, [@zhekai-jiang](https://github.com/zhekai-jiang)
+- Bence Kovács, [@githappens](https://github.com/githappens)
 
 Also see Github's list of [contributors](https://github.com/hovancik/stretchly/graphs/contributors).
 

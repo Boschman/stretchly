@@ -1,5 +1,3 @@
-// Get path of correct app icon based on different criteria
-
 class AppIcon {
   constructor ({
     platform,
@@ -7,8 +5,9 @@ class AppIcon {
     monochrome,
     inverted,
     darkMode,
-    timeToBreakInTray,
+    trayIconStyle,
     timeToBreak,
+    percentage,
     reference
   }) {
     this.platform = platform
@@ -16,8 +15,9 @@ class AppIcon {
     this.monochrome = monochrome
     this.inverted = inverted
     this.darkMode = darkMode
-    this.timeToBreakInTray = timeToBreakInTray
+    this.trayIconStyle = trayIconStyle
     this.timeToBreak = timeToBreak
+    this.percentage = percentage
     this.reference = reference
   }
 
@@ -25,36 +25,38 @@ class AppIcon {
     const pausedString = this.paused ? 'Paused' : ''
     const invertedMonochromeString = this.inverted ? 'Inverted' : ''
     const darkModeString = this.darkMode ? 'Dark' : ''
-    const timeToBreakInTrayString = (this.paused || this.reference === 'finishMicrobreak' ||
-      this.reference === 'finishBreak' || !this.timeToBreakInTray || !Number.isInteger(this.timeToBreak))
-      ? ''
-      : `Number${this.timeToBreak}`
+    let suffixString = ''
+
+    if (!(this.paused || this.reference === 'finishMicrobreak' || this.reference === 'finishBreak')) {
+      if (this.trayIconStyle === 'progress' && Number.isInteger(this.percentage) && this.percentage >= 0 && this.percentage <= 100) {
+        suffixString = `Progress${this.percentage}`
+      } else if (this.trayIconStyle === 'time' && Number.isInteger(this.timeToBreak) && this.timeToBreak >= 0 && this.timeToBreak <= 99) {
+        suffixString = `Number${this.timeToBreak}`
+      }
+    }
 
     if (this.monochrome) {
       if (this.platform === 'darwin') {
-        return `trayMacMonochrome${pausedString}${timeToBreakInTrayString}Template.png`
+        return `trayMacMonochrome${pausedString}${suffixString}Template.png`
       } else {
-        return `trayMonochrome${invertedMonochromeString}${pausedString}${timeToBreakInTrayString}.png`
+        const extString = this.platform === 'win32' ? 'ico' : 'png'
+        return `trayMonochrome${invertedMonochromeString}${pausedString}${suffixString}.${extString}`
       }
     } else {
       if (this.platform === 'darwin') {
-        return `trayMac${pausedString}${darkModeString}${timeToBreakInTrayString}.png`
+        return `trayMac${pausedString}${darkModeString}${suffixString}.png`
       } else {
-        return `tray${pausedString}${darkModeString}${timeToBreakInTrayString}.png`
+        const extString = this.platform === 'win32' ? 'ico' : 'png'
+        return `tray${pausedString}${darkModeString}${suffixString}.${extString}`
       }
     }
   }
 
   get windowIconFileName () {
-    const invertedMonochromeString = this.inverted ? 'Inverted' : ''
     const darkModeString = this.darkMode ? 'Dark' : ''
 
-    if (this.monochrome) {
-      return `trayMonochrome${invertedMonochromeString}.png`
-    } else {
-      return `tray${darkModeString}.png`
-    }
+    return `tray${darkModeString}.png`
   }
 }
 
-module.exports = AppIcon
+export default AppIcon

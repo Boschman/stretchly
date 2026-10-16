@@ -1,1 +1,3 @@
-npm run lint
+files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.([cm]?js|jsx)$' || true)
+[ -z "$files" ] && exit 0
+echo "$files" | xargs ./node_modules/.bin/standard

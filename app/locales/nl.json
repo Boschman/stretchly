@@ -1,12 +1,12 @@
 {
   "main": {
     "toolTipHeader": "Stretchly - Pauze herinnering app",
-    "microbreakIn": "Mini Pauze in $t(utils.seconds, {'count': {{seconds}} })",
-    "breakIn": "Lange Pauze in $t(utils.seconds, {'count': {{seconds}} })",
+    "microbreakIn": "Mini pauze in $t(utils.seconds, {'count': {{seconds}} })",
+    "breakIn": "Lange pauze in $t(utils.seconds, {'count': {{seconds}} })",
     "resumingBreaks": "Pauzes hervatten",
     "downloadLatestVersion": "Download de laatste versie",
-    "toBreak": "Lange Pauze",
-    "toMicrobreak": "Mini Pauze",
+    "toBreak": "Lange pauze",
+    "toMicrobreak": "Mini pauze",
     "skipToTheNext": "Ga naar de volgende",
     "resume": "Hervat",
     "pause": "Pauze",
@@ -52,23 +52,23 @@
       "restoreDefaults": "Standaardinstellingen herstellen"
     },
     "schedule": {
-      "miniBreaks": "Mini Pauzes:",
+      "miniBreaks": "Mini pauzes:",
       "miniBreaksInfo": "Mini pauzes zijn korte pauzes die regelmatig genomen worden om je de kans te geven om uit te rekken en te ontspannen.",
       "breakFor": "Pauze voor:",
       "every": "Elke:",
-      "showNotificationBeforeMiniBreak": "Toon notificatie voordat een Mini Pauze begint",
-      "enablePostponeMini": "Uitstellen van Mini Pauzes inschakelen",
-      "longBreaks": "Lange Pauzes:",
-      "longBreaksInfo": "Lange Pauzes worden minder regelmatig genomen, maar zijn van een langere duratie, waardoor je de mogelijkheid hebt om een verlende pauze van je werk te nemen.",
-      "enableLongBreaks": "Lange Pauzes inschakelen",
-      "showNotificationBeforeLongBreak": "Toon notificatie voordat een Lange Pauze begint",
-      "enablePostponeLong": "Uitstellen van Lange Pauzes inschakelen",
-      "strictMode": "Strenge Modus:",
-      "strictModeInfo": "Strenge Modus voorkomt dat je de Mini Pauzes en Lange Pauzes kunt overslaan en is ontworpen om te helpen met discipline.",
-      "enableStrictMini": "Strenge Modus inschakelen voor Mini Pauzes",
-      "enableStrictLong": "Strenge Modus inschakelen voor Lange Pauzes",
+      "showNotificationBeforeMiniBreak": "Toon notificatie voordat een Mini pauze begint",
+      "enablePostponeMini": "Uitstellen van Mini pauzes inschakelen",
+      "longBreaks": "Lange pauzes:",
+      "longBreaksInfo": "Lange pauzes worden minder regelmatig genomen, maar zijn van een langere duratie, waardoor je de mogelijkheid hebt om een verlende pauze van je werk te nemen.",
+      "enableLongBreaks": "Lange pauzes inschakelen",
+      "showNotificationBeforeLongBreak": "Toon notificatie voordat een Lange pauze begint",
+      "enablePostponeLong": "Uitstellen van Lange pauzes inschakelen",
+      "strictMode": "Strenge modus:",
+      "strictModeInfo": "Strenge modus voorkomt dat je de Mini pauzes en Lange pauzes kunt overslaan en is ontworpen om te helpen met discipline.",
+      "enableStrictMini": "Strenge Modus inschakelen voor Mini pauzes",
+      "enableStrictLong": "Strenge Modus inschakelen voor Lange pauzes",
       "cantDisableBoth": "Het is niet mogelijk om allebei de pauze soorten uit te schakelen",
-      "enableMiniBreaks": "Mini Pauzes inschakelen"
+      "enableMiniBreaks": "Mini pauzes inschakelen"
     },
     "theme": {
       "appearance": "Uiterlijk:",
@@ -82,7 +82,7 @@
       "crystalGlass": "Kristalglas",
       "windChime": "Windgong",
       "ticToc": "Tik tok",
-      "menubarIcon": "Menubalk icoon:",
+      "trayIcon": "Menubalk icoon:",
       "colour": "Kleur",
       "monochrome": "Monochroom",
       "invertedMonochrome": "Omgekeerd Monochroom",
@@ -107,7 +107,7 @@
       "loveStretchly": "Hou je van Stretchly?",
       "desc1": "Het is wetenschappelijk bewezen dat regelmatig pauzes nemen tijdens het gebruik van een computer belangrijk is voor je fysieke en mentale welzijn.",
       "desc2": "Stretchly is gratis. Maar je kan ons ondersteunen door te doneren en ons daarmee te helpen om Stretchly te verbeteren en andere gratis software uit te brengen.",
-      "becomePatron": "Word een Patron",
+      "becomeContributor": "Word een Patron",
       "alreadyContributor": "Ik ben al een bijdrager",
       "authenticateUsing": "Authenticeren met:",
       "contributorPreferences": "Bijdrager Instellingen",
@@ -137,7 +137,7 @@
     "postponeFor": "Uitstellen voor:",
     "maxPostpones": "Maximaal aantal uitstellingen:",
     "longBreaks": "Lange Pauze:",
-    "pauseUntilMoring": "Pauze tot ochtend:",
+    "pauseUntilMorning": "Pauze tot ochtend:",
     "pauseUntil": "Pauze tot:",
     "pauseUntilMorningInfo": "Specifeer tot welk uur 'Pauze tot ochtend' zou moeten pauzeren.",
     "welcomeWindow": "Welkom venster:",
@@ -507,6 +507,10 @@
     "abf": {
       "title": "Palmeren",
       "text": "Terwijl je zit, zet je jouw ellebogen op het bureau en dicht bij de rand van het bureau. Laat je gewicht naar voren vallen en leg je handen boven jouw ogen. Sluit je ogen en adem langzaam in door je neus en houd enkele seconden vast. Blijf diep ademhalen."
+    },
+    "abj": {
+      "title": "Overprikkeld?",
+      "text": "Probeer de 5-4-3-2-1-oefening: kijk rond en benoem 5 dingen die je ziet, 4 die je kunt aanraken, 3 die je hoort, 2 die je ruikt en 1 die je proeft."
     }
   }
 }

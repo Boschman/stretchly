@@ -74,7 +74,7 @@
       "appearance": "Udseende:",
       "sounds": "Lyde:",
       "enableSounds": "Slå lyd til",
-      "menubarIcon": "Menubar ikon:",
+      "trayIcon": "Menubar ikon:",
       "colour": "Farve",
       "monochrome": "Monokrom",
       "invertedMonochrome": "invertere Monokrom",
@@ -87,7 +87,8 @@
       "transparentMode": "Aktiver gennemsigtighed",
       "crystalGlass": "Krystalglas",
       "windChime": "vindspil",
-      "ticToc": "Tik-Tak"
+      "ticToc": "Tik-Tak",
+      "reverie": "Dagdrøm"
     },
     "about": {
       "tagline": "Pause påmindelses app",
@@ -106,7 +107,7 @@
       "loveStretchly": "Elsker du Stretchly?",
       "desc1": "At tage pauser ofte når man bruger en computer er påvist videnskabligt bevist, at det vigtigt for din fysiske og mentale helbred.",
       "desc2": "Stretchly er gratis. Men du kan blive sponsor ved, at donere og hjælpe os med at forberede Stretchly og publisere andet gratis software.",
-      "becomePatron": "Bliv sponsor (Patron)",
+      "becomeContributor": "Bliv sponsor (Patron)",
       "alreadyContributor": "Jeg er allerede sponsor",
       "authenticateUsing": "Autentificeringen via:",
       "contributorPreferences": "Sponser præferencer",
@@ -131,7 +132,7 @@
     "postponeFor": "Udsæt for:",
     "maxPostpones": "Max udskydelser:",
     "longBreaks": "Lange pauser:",
-    "pauseUntilMoring": "Stop indtil imorgen:",
+    "pauseUntilMorning": "Stop indtil imorgen:",
     "pauseUntil": "Pause indtil:",
     "pauseUntilMorningInfo": "Vælg hvilken time, som 'Stop indtil imorgen' skal slås fra igen.",
     "welcomeWindow": "Velkomst vindue:",

@@ -28,7 +28,8 @@
   "break": {
     "title": "Este timpul să iei o pauză!",
     "skip": "Sari peste această pauză",
-    "postpone": "Amână această pauză"
+    "postpone": "Amână această pauză",
+    "finish": "Finalizează această pauză"
   },
   "preferences": {
     "theme": {
@@ -40,7 +41,7 @@
       "crystalGlass": "Pahar de cristal",
       "windChime": "Clopoțel",
       "ticToc": "Tic tac",
-      "menubarIcon": "Pictograma barei de meniu:",
+      "trayIcon": "Pictograma barei de meniu:",
       "colour": "Culoare",
       "monochrome": "Monocrom",
       "invertedMonochrome": "Monocrom inversat",
@@ -65,7 +66,7 @@
     },
     "heart": {
       "loveStretchly": "Îți place Stretchly?",
-      "becomePatron": "Deveniți un Patron",
+      "becomeContributor": "Deveniți un Patron",
       "alreadyContributor": "Sunt deja un colaborator",
       "authenticateUsing": "Autentificare folosind:",
       "contributorPreferences": "Preferințele colaboratorilor",
@@ -155,7 +156,7 @@
     "longBreaks": "Pauze lungi:",
     "maxPostpones": "Maximum amânări :",
     "opacityTheme": "Transparența temei:",
-    "pauseUntilMoring": "Amână până dimineață:",
+    "pauseUntilMorning": "Amână până dimineață:",
     "miniBreakStartSound": "Redați sunetul de la sfârșitul pauzei și la începutul pauzei scurte",
     "naturalBreaksInfo": "Dacă monitorizarea timpului de inactivitate este activată în Preferințele principale, puteți specifica după ce timp pauzele sunt întrerupte.",
     "breakPostpone": "Amânarea pauzelor:",
@@ -186,19 +187,25 @@
   },
   "utils": {
     "remaining": "{{count}} rămase",
-    "oclock_other": "{{count}} oră",
     "oclock_one": "{{count}} oră",
+    "oclock_few": "",
+    "oclock_other": "{{count}} oră",
     "seconds_one": "{{count}} secunde",
+    "seconds_few": "",
+    "seconds_other": "{{count}} secunde",
     "percent_one": "{{count}} la sută",
+    "percent_few": "",
+    "percent_other": "{{count}} la sută",
     "inAbout": "in aproape {{count}}",
     "none_one": "{{count}}",
-    "percent_other": "{{count}} la sută",
-    "seconds_other": "{{count}} secunde",
-    "hours_one": "{{count}} ora",
-    "minutes_other": "{{count}} minute",
-    "hours_other": "{{count}} ore",
+    "none_few": "",
     "none_other": "{{count}}",
-    "minutes_one": "{{count}} minute"
+    "hours_one": "{{count}} ora",
+    "hours_few": "",
+    "hours_other": "{{count}} ore",
+    "minutes_one": "{{count}} minute",
+    "minutes_few": "",
+    "minutes_other": "{{count}} minute"
   },
   "statusMessages": {
     "indefinitely": "Pe termen nelimitat",
@@ -209,6 +216,7 @@
     "nextMiniBreak": "Următoarea pauză scurtă",
     "appExclusion": "Regula de excludere a aplicației",
     "afterMiniBreak_one": "după {{count}} pauza scurtă",
+    "afterMiniBreak_few": "",
     "afterMiniBreak_other": "după {{count}} pauze scurte"
   },
   "miniBreakIdeas": {

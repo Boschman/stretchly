@@ -83,7 +83,7 @@
       "crystalGlass": "Kristallilasi",
       "windChime": "Tuulikello",
       "ticToc": "Tik Tak",
-      "menubarIcon": "Valikon kuvake:",
+      "trayIcon": "Valikon kuvake:",
       "colour": "Värillinen",
       "monochrome": "Mustavalkoinen",
       "invertedMonochrome": "Käänteinen mustavalkoinen",
@@ -106,7 +106,7 @@
       "loveStretchly": "Rakasta Stretchlyä?",
       "desc1": "Säännöllisten taukojen pitäminen tietokonetta käyttäessä on tieteellisesti todistetusti tärkeää fyysisen ja henkisen hyvinvoinnin kannalta.",
       "desc2": "Stretchly on ilmainen. Voit kuitenkin antaa tukesi lahjoittamalla tai auttamalla meitä kehittämään Stretchlyä ja julkaisemaan muita ilmaisia sovelluksia.",
-      "becomePatron": "Ryhdy lahjoittajaksi",
+      "becomeContributor": "Ryhdy lahjoittajaksi",
       "alreadyContributor": "Olen jo tukija",
       "authenticateUsing": "Vahvista käyttäen:",
       "contributorPreferences": "Tukijan asetukset",
@@ -131,7 +131,7 @@
     "postponeFor": "Lykkää:",
     "maxPostpones": "Maks. lykkäyksiä:",
     "longBreaks": "Pitkät tauot:",
-    "pauseUntilMoring": "Pysäytä aamuun saakka:",
+    "pauseUntilMorning": "Pysäytä aamuun saakka:",
     "pauseUntil": "Pysäytä kunnes:",
     "pauseUntilMorningInfo": "Määritä mihin asti 'Pysäytä aamuun saakka' pitäisi pysäyttää tauot.",
     "welcomeWindow": "Tervetuloikkuna:",
@@ -201,5 +201,46 @@
     "afterMiniBreak_one": "{{count}} minitauon jälkeen",
     "afterMiniBreak_other": "{{count}} minitauon jälkeen",
     "resuming": "Jatketaan"
+  },
+  "miniBreakIdeas": {
+    "aaa": {
+      "text": "Hae lasi vettä"
+    },
+    "aab": {
+      "text": "Käännä päätäsi hitaasti oikealta vasemmalle ja takaisin"
+    },
+    "aac": {
+      "text": "Käännä päätäsi alhaalta ylös ja takaisin"
+    },
+    "aad": {
+      "text": "Sulje silmäsi ja ota muutama syvä hengitys"
+    },
+    "aae": {
+      "text": "Sulje silmäsi ja ajattele jotain rentouttavaa"
+    },
+    "aaf": {
+      "text": "Venyttele jalkojasi"
+    },
+    "aag": {
+      "text": "Venyttele käsiäsi"
+    },
+    "aah": {
+      "text": "Istutko hyvässä asennossa?"
+    },
+    "aai": {
+      "text": "Käännä päätäsi sivuilta sivuille ja pidä asento 10 sekunttia"
+    },
+    "aak": {
+      "text": "Nouse tuolilta ja venyttele."
+    },
+    "aal": {
+      "text": "Katso vähintään 20 metrin päähän."
+    },
+    "aam": {
+      "text": "Ajattele hetki jotain miellyttävää."
+    },
+    "aan": {
+      "text": "Hymyile hetki vain koska olet olemassa."
+    }
   }
 }

@@ -5,25 +5,32 @@ on:
     branches:
       - release
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '20.18.1'
-    - run: pip install setuptools
-    - run: npm install -g npm
-    - run: npm install
-    - run: node_modules/.bin/electron-builder --linux snap --publish=never
+    - name: Checkout
+      uses: actions/checkout@v6
+    - name: Setup build environment
+      uses: ./.github/actions/setup-build
+    - name: Build snap package
+      run: node_modules/.bin/electron-builder --linux snap --publish=never
       env:
         GH_TOKEN: ${{ secrets.github_token }}
+    - name: Smoke test snap
+      run: |
+        sudo apt-get install -y xvfb
+        sudo snap install --dangerous ./dist/Stretchly_*.snap
+        xvfb-run -a stretchly &
+        sleep 8
+        pgrep -f stretchly || (snap logs stretchly && exit 1)
     - name: Setup Snapcraft
       run: |
           sudo snap install snapcraft --classic
-          echo "$SNAP_TOKEN" | snapcraft login --with -
           snapcraft upload --release=candidate ./dist/Stretchly_*.snap
       env:
-        SNAP_TOKEN: ${{secrets.snap_token}}
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snap_token }}

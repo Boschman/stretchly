@@ -1,132 +1,220 @@
-// Script to generate icons for "Time in tray" feature
-// `canvas` is not installed so install it before running this script
+// Script to generate tray icons
+// Requires `@napi-rs/canvas`, `png-to-ico` (npm packages) and, for the `base` step only, the `inkscape` CLI.
+// Install the npm packages before running: `npm install --no-save @napi-rs/canvas png-to-ico`
+// The committed icons were generated with @napi-rs/canvas@1.0.0 and png-to-ico@3.0.1; pin to these
+// versions to reproduce the exact glyph rendering and avoid a noisy regenerated binary diff.
 // Run this script using `node graphics/time-intray-icon-generator.js`
-const { createCanvas, loadImage, registerFont } = require('canvas')
-const fs = require('fs')
-const path = require('path')
+// You can optionally pass an argument to generate only specific icons:
+// `node graphics/time-intray-icon-generator.js base` - generate base PNGs from SVGs using Inkscape
+// `node graphics/time-intray-icon-generator.js baseico` - generate Windows .ico for the base/paused icons
+// `node graphics/time-intray-icon-generator.js numbers` - generate number overlay icons (0-99)
+// `node graphics/time-intray-icon-generator.js progress` - generate progress overlay icons (0-100)
+//
+// Windows tray icons are emitted as multi-size .ico files (16/20/24/32 = 100/125/150/200% DPI) so Windows
+// can pick the crisp native size per display. macOS keeps Template/@2x PNGs and Linux keeps 32px PNGs.
+import { createCanvas, loadImage, GlobalFonts } from '@napi-rs/canvas'
+import pngToIco from 'png-to-ico'
+import { execSync } from 'node:child_process'
+import fs from 'node:fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-// Load the font (make sure the font file is available in your project directory)
-registerFont(path.join(__dirname, '../app/css/fonts/NotoSans-Regular.ttf'), { family: 'Noto Sans Regular' })
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-async function overlayTextOnImage (inputImagePath, outputImagePath, text, fontColor, fontFamily) {
-  try {
-    // Load the input image
-    const baseImage = await loadImage(inputImagePath)
-    // For now the baseImage sets the icon dimensions (might change if SVGs get used as the baseImage)
-    const imageWidth = baseImage.width
-    const imageHeight = baseImage.height
+const iconsDir = path.join(__dirname, '../app/images/app-icons')
 
-    const canvas = createCanvas(imageWidth, imageHeight)
-    const ctx = canvas.getContext('2d')
+// Use a bolder font for better legibility of the numbers at small tray sizes
+GlobalFonts.registerFromPath(path.join(__dirname, 'NotoSans-Bold.ttf'), 'Noto Sans Bold')
+const fontFamily = 'Noto Sans Bold'
 
-    // Draw the input image onto the canvas
-    ctx.drawImage(baseImage, 0, 0, imageWidth, imageHeight)
+// Windows DPI ladder embedded in every .ico (100% / 125% / 150% / 200%)
+const winIcoSizes = [16, 20, 24, 32]
+// Linux tray uses a single PNG; macOS uses 16 + 32@2x
+const linuxSize = 32
 
-    // Set the font properties
-    const textHeightRatio = 0.8
-    const maxTextWidthRatio = 0.8
-    ctx.quality = 'best'
-    ctx.font = `${textHeightRatio * imageHeight}px '${fontFamily}'`
-    ctx.fillStyle = fontColor
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
+const baseImageCache = new Map()
+async function loadBase (name) {
+  if (!baseImageCache.has(name)) {
+    baseImageCache.set(name, await loadImage(path.join(iconsDir, `${name}.png`)))
+  }
+  return baseImageCache.get(name)
+}
 
-    // Calculate the position to center the text
-    const textMetrics = ctx.measureText(text)
-    // Offset the text, so the drawn text is vertically centered, not its baseline
-    const verticalOffsetFix = (textMetrics.actualBoundingBoxAscent - textMetrics.actualBoundingBoxDescent) / 2
-    const textX = imageWidth / 2
-    const textY = imageHeight / 2 + verticalOffsetFix
-    const textWidth = textMetrics.width
-    const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
+function newContext (size) {
+  const canvas = createCanvas(size, size)
+  const ctx = canvas.getContext('2d')
+  ctx.imageSmoothingEnabled = true
+  ctx.quality = 'best'
+  return { canvas, ctx }
+}
 
-    // Create cutout for text
-    ctx.globalCompositeOperation = 'destination-out'
-    const paddingX = 4
-    const paddingY = 4
-    const radiusX = textWidth / 2 + paddingX
-    const radiusY = textHeight / 2 + paddingY
-    ctx.beginPath()
-    ctx.ellipse(
-      textX,
-      imageHeight / 2,
-      radiusX,
-      radiusY,
-      0, 0, 2 * Math.PI
-    )
-    ctx.fill()
+function drawText (ctx, size, text, fontColor) {
+  const textHeightRatio = 0.75
+  const maxTextWidthRatio = 0.9
+  const safeAreaWidthRatio = 0.12
+  ctx.font = `${textHeightRatio * size}px '${fontFamily}'`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  const textMetrics = ctx.measureText(text)
+  const verticalOffsetFix = (textMetrics.actualBoundingBoxAscent - textMetrics.actualBoundingBoxDescent) / 2
+  const x = size / 2
+  const y = size / 2 + verticalOffsetFix
+  const maxTextWidth = maxTextWidthRatio * size
 
-    // Draw the text onto the canvas
-    ctx.globalCompositeOperation = 'source-over'
-    ctx.fillStyle = fontColor
-    ctx.fillText(text, textX, textY, maxTextWidthRatio * imageWidth)
+  ctx.save()
+  ctx.globalCompositeOperation = 'destination-out'
+  ctx.lineCap = 'round'
+  ctx.lineJoin = 'round'
+  ctx.lineWidth = Math.max(1, safeAreaWidthRatio * size)
+  ctx.strokeText(text, x, y, maxTextWidth)
+  ctx.fillText(text, x, y, maxTextWidth)
+  ctx.restore()
 
-    // Convert the canvas to a buffer
-    const buffer = canvas.toBuffer('image/png')
+  ctx.fillStyle = fontColor
+  ctx.fillText(text, x, y, maxTextWidth)
+}
 
-    // Save the output image
-    fs.writeFileSync(outputImagePath, buffer)
-  } catch (error) {
-    console.error('Error creating image with overlay text:', error)
+async function renderText (baseName, size, text, fontColor) {
+  const baseImage = await loadBase(baseName)
+  const { canvas, ctx } = newContext(size)
+  ctx.globalAlpha = 0.6
+  ctx.drawImage(baseImage, 0, 0, size, size)
+  ctx.globalAlpha = 1.0
+  drawText(ctx, size, text, fontColor)
+  return canvas.toBuffer('image/png')
+}
+
+async function renderProgress (baseName, foregroundName, size, percentage) {
+  const baseImage = await loadBase(baseName)
+  const foregroundImage = await loadBase(foregroundName)
+  const { canvas, ctx } = newContext(size)
+  ctx.globalAlpha = 0.6
+  ctx.drawImage(baseImage, 0, 0, size, size)
+  ctx.globalAlpha = 1.0
+  const fillHeight = size * (percentage / 100)
+  const y = size - fillHeight
+  ctx.save()
+  ctx.beginPath()
+  ctx.rect(0, y, size, fillHeight)
+  ctx.clip()
+  ctx.drawImage(foregroundImage, 0, 0, size, size)
+  ctx.restore()
+  return canvas.toBuffer('image/png')
+}
+
+async function renderPlain (baseName, size) {
+  const baseImage = await loadBase(baseName)
+  const { canvas, ctx } = newContext(size)
+  ctx.drawImage(baseImage, 0, 0, size, size)
+  return canvas.toBuffer('image/png')
+}
+
+function writePng (name, buffer) {
+  fs.writeFileSync(path.join(iconsDir, `${name}.png`), buffer)
+}
+
+async function writeIco (name, frames) {
+  fs.writeFileSync(path.join(iconsDir, `${name}.ico`), await pngToIco(frames))
+}
+
+// Tray families rendered for Windows (.ico) and Linux (.png)
+const winLinuxFamilies = [
+  { name: 'tray', base: 'tray', fontColor: '#000000' },
+  { name: 'trayDark', base: 'trayDark', fontColor: '#ffffff' },
+  { name: 'trayMonochrome', base: 'trayMonochrome', fontColor: '#000000' },
+  { name: 'trayMonochromeInverted', base: 'trayMonochromeInvertedOverlay', foreground: 'trayMonochromeInverted', fontColor: '#ffffff' }
+]
+
+// Tray families rendered for macOS (16 + 32@2x PNGs). Monochrome uses Template (OS-tinted).
+const macFamilies = [
+  { name: 'trayMac', base: 'trayMac', suffix: '', fontColor: '#000000' },
+  { name: 'trayMacDark', base: 'trayMacDark', suffix: '', fontColor: '#ffffff' },
+  { name: 'trayMacMonochrome', base: 'trayMacMonochromeTemplate', suffix: 'Template', fontColor: '#000000' }
+]
+
+// Base/paused icons that need a Windows .ico (no number overlay)
+const baseIcoNames = [
+  'tray', 'trayDark', 'trayPaused', 'trayPausedDark',
+  'trayMonochrome', 'trayMonochromePaused',
+  'trayMonochromeInverted', 'trayMonochromeInvertedPaused'
+]
+
+async function generateBase () {
+  const baseIcons = [
+    { svg: 'appicon-colour-light-mode.svg', outputs: [{ name: 'tray.png', size: 32 }, { name: 'trayMac.png', size: 16 }, { name: 'trayMac@2x.png', size: 32 }] },
+    { svg: 'appicon-colour-dark-mode.svg', outputs: [{ name: 'trayDark.png', size: 32 }, { name: 'trayMacDark.png', size: 16 }, { name: 'trayMacDark@2x.png', size: 32 }] },
+    { svg: 'appicon-colour-light-mode-paused.svg', outputs: [{ name: 'trayPaused.png', size: 32 }, { name: 'trayMacPaused.png', size: 16 }, { name: 'trayMacPaused@2x.png', size: 32 }] },
+    { svg: 'appicon-colour-dark-mode-paused.svg', outputs: [{ name: 'trayPausedDark.png', size: 32 }, { name: 'trayMacPausedDark.png', size: 16 }, { name: 'trayMacPausedDark@2x.png', size: 32 }] },
+    { svg: 'appicon-mono-light-mode.svg', outputs: [{ name: 'trayMonochrome.png', size: 32 }, { name: 'trayMacMonochromeTemplate.png', size: 16 }, { name: 'trayMacMonochromeTemplate@2x.png', size: 32 }] },
+    { svg: 'appicon-mono-light-mode-paused.svg', outputs: [{ name: 'trayMonochromePaused.png', size: 32 }, { name: 'trayMacMonochromePausedTemplate.png', size: 16 }, { name: 'trayMacMonochromePausedTemplate@2x.png', size: 32 }] },
+    { svg: 'appicon-mono-dark-mode.svg', outputs: [{ name: 'trayMonochromeInverted.png', size: 32 }] },
+    { svg: 'appicon-mono-dark-mode-overlay.svg', outputs: [{ name: 'trayMonochromeInvertedOverlay.png', size: 32 }] },
+    { svg: 'appicon-mono-dark-mode-paused.svg', outputs: [{ name: 'trayMonochromeInvertedPaused.png', size: 32 }] }
+  ]
+  for (const icon of baseIcons) {
+    const svgPath = path.join(__dirname, icon.svg)
+    for (const output of icon.outputs) {
+      const outputPath = path.join(iconsDir, output.name)
+      execSync(`inkscape '${svgPath}' --export-type=png --export-filename='${outputPath}' --export-width=${output.size} --export-height=${output.size} --export-background-opacity=0`)
+      console.log(`Generated ${output.name} (${output.size}x${output.size}) from ${icon.svg}`)
+    }
   }
 }
 
-const fontFamily = 'Noto Sans Regular';
-[
-  {
-    name: 'tray',
-    fontColor: '#000000'
-  },
-  {
-    name: 'trayDark',
-    fontColor: '#8c8c8c'
-  },
-  {
-    name: 'trayMonochrome',
-    fontColor: '#000000',
-    fontSize: 25.5
-  },
-  {
-    name: 'trayMonochromeInverted',
-    fontColor: '#8c8c8c'
-  },
-  {
-    name: 'trayMac',
-    fontColor: '#000000'
-  },
-  {
-    name: ['trayMac', '@2x'],
-    fontColor: '#000000'
-  },
-  {
-    name: 'trayMacDark',
-    fontColor: '#8c8c8c'
-  },
-  {
-    name: ['trayMacDark', '@2x'],
-    fontColor: '#8c8c8c'
-  },
-  {
-    name: ['trayMacMonochrome', 'Template'],
-    fontColor: '#000000'
-  },
-  {
-    name: ['trayMacMonochrome', 'Template@2x'],
-    fontColor: '#000000'
+async function generateBaseIco () {
+  for (const name of baseIcoNames) {
+    const frames = await Promise.all(winIcoSizes.map(size => renderPlain(name, size)))
+    await writeIco(name, frames)
   }
-].forEach(iconStyle => {
-  const nameArray = typeof iconStyle.name === 'string' ? [iconStyle.name, ''] : iconStyle.name
-  const fullName = nameArray.join('')
-  const prefix = nameArray[0]
-  const suffix = nameArray[1]
-  const inputImagePath = path.join(__dirname, `../app/images/app-icons/${fullName}.png`)
-  const promises = Array.from({ length: 100 }, (_, k) => k).map(i => {
-    const outputImagePath = path.join(__dirname, `../app/images/app-icons/${prefix}Number${i}${suffix}.png`)
-    const text = i.toString()
-    return overlayTextOnImage(inputImagePath, outputImagePath, text, iconStyle.fontColor, fontFamily)
-  })
+  console.log('Base/paused .ico icons generated.')
+}
 
-  Promise.all(promises).then(() =>
-    console.log(`Images for theme ${fullName} with overlay text have been processed.`)
-  )
-})
+async function generateNumbers () {
+  for (const family of winLinuxFamilies) {
+    for (let i = 0; i < 100; i++) {
+      const text = i.toString()
+      const frames = await Promise.all(winIcoSizes.map(size => renderText(family.base, size, text, family.fontColor)))
+      writePng(`${family.name}Number${i}`, frames[winIcoSizes.indexOf(linuxSize)])
+      await writeIco(`${family.name}Number${i}`, frames)
+    }
+    console.log(`Number icons for ${family.name} processed (.png + .ico).`)
+  }
+  for (const family of macFamilies) {
+    for (let i = 0; i < 100; i++) {
+      const text = i.toString()
+      writePng(`${family.name}Number${i}${family.suffix}`, await renderText(family.base, 16, text, family.fontColor))
+      writePng(`${family.name}Number${i}${family.suffix}@2x`, await renderText(`${family.base}@2x`, 32, text, family.fontColor))
+    }
+    console.log(`Number icons for ${family.name} (mac) processed.`)
+  }
+}
+
+async function generateProgress () {
+  for (const family of winLinuxFamilies) {
+    const foreground = family.foreground || family.base
+    for (let i = 0; i <= 100; i++) {
+      const frames = await Promise.all(winIcoSizes.map(size => renderProgress(family.base, foreground, size, i)))
+      writePng(`${family.name}Progress${i}`, frames[winIcoSizes.indexOf(linuxSize)])
+      await writeIco(`${family.name}Progress${i}`, frames)
+    }
+    console.log(`Progress icons for ${family.name} processed (.png + .ico).`)
+  }
+  for (const family of macFamilies) {
+    for (let i = 0; i <= 100; i++) {
+      writePng(`${family.name}Progress${i}${family.suffix}`, await renderProgress(family.base, family.base, 16, i))
+      writePng(`${family.name}Progress${i}${family.suffix}@2x`, await renderProgress(`${family.base}@2x`, `${family.base}@2x`, 32, i))
+    }
+    console.log(`Progress icons for ${family.name} (mac) processed.`)
+  }
+}
+
+const generationMode = process.argv[2]
+
+if (generationMode === 'base') {
+  await generateBase()
+} else {
+  if (!generationMode || generationMode === 'baseico') await generateBaseIco()
+  if (!generationMode || generationMode === 'numbers') await generateNumbers()
+  if (!generationMode || generationMode === 'progress') await generateProgress()
+}

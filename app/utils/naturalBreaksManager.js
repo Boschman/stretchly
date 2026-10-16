@@ -1,11 +1,14 @@
-const EventEmitter = require('events')
-const log = require('electron-log/main')
+import EventEmitter from 'events'
+import log from 'electron-log/main.js'
+import { desktopIdle } from 'node-desktop-idle-v2'
+import { powerMonitor } from 'electron'
 
 class NaturalBreaksManager extends EventEmitter {
   constructor (settings) {
     super()
     this.settings = settings
     this.usingNaturalBreaks = settings.get('naturalBreaks')
+    this.naturalBreaksCheckInterval = settings.get('naturalBreaksCheckInterval')
     this.timer = null
     this.isOnNaturalBreak = false
     this.isSchedulerCleared = false
@@ -15,23 +18,27 @@ class NaturalBreaksManager extends EventEmitter {
   }
 
   start () {
+    if (this.timer) return
     this.usingNaturalBreaks = true
+    desktopIdle.startMonitoring()
     this._checkIdleTime()
     log.info('Stretchly: starting Idle time monitoring')
   }
 
   stop () {
+    if (!this.timer) return
     this.usingNaturalBreaks = false
     this.isOnNaturalBreak = false
     this.isSchedulerCleared = false
-    clearTimeout(this.timer)
+    clearInterval(this.timer)
     this.timer = null
+    desktopIdle.stopMonitoring()
     log.info('Stretchly: stopping Idle time monitoring')
   }
 
   get idleTime () {
     if (this.usingNaturalBreaks) {
-      return require('electron').powerMonitor.getSystemIdleTime() * 1000
+      return (powerMonitor.getSystemIdleTime() || desktopIdle.getIdleTime()) * 1000
     } else {
       return 0
     }
@@ -56,8 +63,8 @@ class NaturalBreaksManager extends EventEmitter {
         this.emit('clearBreakScheduler')
       }
       lastIdleTime = idleTime
-    }, 1000)
+    }, this.naturalBreaksCheckInterval)
   }
 }
 
-module.exports = NaturalBreaksManager
+export default NaturalBreaksManager

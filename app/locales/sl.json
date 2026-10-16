@@ -27,7 +27,7 @@
   },
   "statusMessages": {
     "resuming": "Nadaljevanje",
-    "afterMiniBreak_one": "po {{count}} Mini premorih",
+    "afterMiniBreak_one": "po {{count}} Mini premoru",
     "afterMiniBreak_two": "po {{count}} Mini premorih",
     "afterMiniBreak_few": "po {{count}} Mini premorih",
     "afterMiniBreak_other": "po {{count}} Mini premoru",
@@ -74,7 +74,8 @@
     "none_one": "{{count}}",
     "none_two": "{{count}}",
     "none_few": "{{count}}",
-    "none_other": "{{count}}"
+    "none_other": "{{count}}",
+    "elapsed": "{{count}} preteklo"
   },
   "contributorPreferences": {
     "0": "Prvi zaslon",
@@ -85,7 +86,7 @@
     "cursor": "Sledi miški",
     "primary": "Primarni zaslon",
     "showOnMonitor": "Prikaži premore na",
-    "screenInfo": "Če onemogočite prikaz premorov na vseh zaslonih, lahko izberete na katerem zaslonu se le-ti prikažejo.",
+    "screenInfo": "Če onemogočite prikaz premorov na vseh zaslonih, lahko izberete na katerem zaslonu se prikažejo.",
     "screen": "Monitor za premore:",
     "showBreaksAsRegularWindows": "Prikaži premore kot običajna okna",
     "showBreaksAsRegularWindowsInfo": "Ko omogočite, bodo okna za premor omogočala fokus, ne bodo več 'Vedno na vrhu' in se bodo pojavila v orodni vrstici.",
@@ -97,8 +98,8 @@
     "pauseAfter": "Zaustavi po:",
     "naturalBreaksInfo": "Če je nadzor nedejavnega časa omogočen v glavnih Nastavitvah, lahko določite po kolikšnem času se premori zaustavijo.",
     "naturalBreaks": "Naravni premori:",
-    "longBreakStartSound": "Predvajaj zvok tudi ob začetku Dolgega premora",
-    "miniBreakStartSound": "Predvajaj zvok tudi ob začetku Mini premora",
+    "longBreakStartSound": "Zvok ob začetku Dolgega premora",
+    "miniBreakStartSound": "Zvok ob začetku Mini premora",
     "volume": "Glasnost:",
     "sounds": "Zvoki:",
     "breakWindowHeight": "Višina:",
@@ -112,7 +113,7 @@
     "welcomeWindow": "Pozdravno okno:",
     "pauseUntilMorningInfo": "Določite uro zaustavitve za možnost 'Zaustavi do jutra'.",
     "pauseUntil": "Zaustavi do:",
-    "pauseUntilMoring": "Zaustavi do jutra:",
+    "pauseUntilMorning": "Zaustavi do jutra:",
     "longBreaks": "Dolgi premori:",
     "maxPostpones": "Največ zamikov:",
     "postponeFor": "Zamakni za:",
@@ -134,8 +135,8 @@
     "showTimeToBreakInTray": "Prikaži čas do naslednjega premora v ikoni opravilne vrstice",
     "currentTimeInBreaks": "Trenutni čas",
     "showCurrentTimeInBreaks": "Prikaži trenutni lokalni čas v oknu premora",
-    "showTrayIcon": "Prikaži ikono menijske vrstice",
-    "toShowTrayIcon": "Pokaži ikono Stretchly v menijski vrstici"
+    "showTrayIcon": "Pokaži ikono v opravilni vrstici",
+    "toShowTrayIcon": "Pokaži Stretchly ikono v opravilni vrstici"
   },
   "preferences": {
     "heart": {
@@ -143,7 +144,7 @@
       "contributorPreferences": "Nastavitve podpornikov",
       "authenticateUsing": "Avtenticirajte se z:",
       "alreadyContributor": "Že podpiram",
-      "becomePatron": "Postanite Patron",
+      "becomeContributor": "Postanite Patron",
       "desc2": "Stretchly je brezplačen. Svojo podporo lahko izkažete z donacijo in nam pomagate še naprej izboljševati Stretchly in izdajati druge brezplačne programe.",
       "desc1": "Redni odmori pri uporabi računalnika so znanstveno dokazano pomembni za vaše telesno in duševno počutje.",
       "loveStretchly": "Ljubite Stretchly?"
@@ -162,10 +163,10 @@
     },
     "theme": {
       "snowWhite": "Snežno bela",
-      "invertedMonochrome": "Izverzne barve",
+      "invertedMonochrome": "Invertirana črno bela",
       "monochrome": "Enobarvna",
       "colour": "Barvna",
-      "menubarIcon": "Ikona opravilne vrstice:",
+      "trayIcon": "Ikona opravilne vrstice:",
       "ticToc": "Tik tok",
       "windChime": "Vetrni zvonec",
       "crystalGlass": "Kristalni kozarec",
@@ -178,7 +179,12 @@
       "autumnBeBlessed": "Blagoslovljena jesen",
       "greenClouds": "Zeleni oblaki",
       "appearance": "Videz:",
-      "reverie": "Sanjarjenje"
+      "reverie": "Sanjarjenje",
+      "silence": "Tišina",
+      "trayIconStyleLabel": "Stil:",
+      "trayIconStyleDefault": "Privzeto",
+      "trayIconStyleTime": "Čas za odmor",
+      "trayIconStyleProgress": "Napredek do odmora"
     },
     "schedule": {
       "cantDisableBoth": "Ne morete onemogočiti obeh načinov premorov",
@@ -196,7 +202,7 @@
       "every": "Vsakih:",
       "breakFor": "Premor za:",
       "enableMiniBreaks": "Omogoči Mini premore",
-      "miniBreaksInfo": "Mini premori so kratki premori, ki jih opravljate pogosto, da se lahko reztegnete in sprostite.",
+      "miniBreaksInfo": "Mini premori so kratki premori, ki jih opravljate pogosto, da se lahko raztegnete in sprostite.",
       "miniBreaks": "Mini premori:"
     },
     "settings": {
@@ -223,7 +229,8 @@
   "break": {
     "title": "Čas za premor!",
     "skip": "Prekoči ta premor",
-    "postpone": "Zamakni ta premor"
+    "postpone": "Zamakni ta premor",
+    "finish": "Zaključi ta premor"
   },
   "miniBreakIdeas": {
     "aaa": {
@@ -520,6 +527,10 @@
     "abi": {
       "title": "Domišljijska vizualizacija",
       "text": "Zapri oči in si predstavljaj sebe na mirnem in pomirjujočem mestu, kot je plaža ali gozd, ter se osredotoči na prizore, zvoke in občutke tega okolja."
+    },
+    "abj": {
+      "title": "Preobremenjen/a?",
+      "text": "Poskusite tehniko ozemljitve 5-4-3-2-1: določite 5 stvari, ki jih lahko vidite, 4 stvari, ki jih lahko dotaknete, 3 stvari, ki jih lahko slišite, 2 stvari, ki jih lahko vonjate, in 1 stvar, ki jo lahko okusite."
     }
   }
 }

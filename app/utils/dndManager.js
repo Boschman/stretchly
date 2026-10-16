@@ -1,25 +1,24 @@
-const EventEmitter = require('events')
-const log = require('electron-log/main')
+import EventEmitter from 'events'
+import log from 'electron-log/main.js'
+import { getFocusAssist } from 'windows-focus-assist'
+import dbus from '@particle/dbus-next'
+import { exec } from 'node:child_process'
+import { promisify } from 'node:util'
+import { readFile } from 'node:fs/promises'
+import { homedir } from 'node:os'
+import { isAbsolute, join } from 'node:path'
 
 class DndManager extends EventEmitter {
   constructor (settings) {
     super()
     this.settings = settings
     this.monitorDnd = settings.get('monitorDnd')
+    this.monitorDndCheckInterval = settings.get('monitorDndCheckInterval')
     this.timer = null
     this.isOnDnd = false
 
     this._unsupDEErrorShown = false
-
-    if (process.platform === 'win32') {
-      this.windowsFocusAssist = require('windows-focus-assist')
-      this.windowsQuietHours = require('windows-quiet-hours')
-    } else if (process.platform === 'darwin') {
-      this.util = require('node:util')
-    } else if (process.platform === 'linux') {
-      this.bus = require('dbus-final').sessionBus()
-      this.util = require('node:util')
-    }
+    this._errorLogged = {}
 
     if (this.monitorDnd) {
       this.start()
@@ -27,90 +26,119 @@ class DndManager extends EventEmitter {
   }
 
   start () {
+    if (this.timer) return
     this.monitorDnd = true
     this._checkDnd()
     log.info('Stretchly: starting Do Not Disturb monitoring')
     if (process.platform === 'linux') {
-      log.info(`System: Your Desktop seems to be ${this._desktopEnviroment}.`)
+      log.info(`System: Your Desktop seems to be ${this._desktopEnvironment}.`)
     }
   }
 
   stop () {
+    if (!this.timer) return
     this.monitorDnd = false
     this.isOnDnd = false
-    clearTimeout(this.timer)
+    clearInterval(this.timer)
     this.timer = null
+    if (this.__sessionBus) {
+      this.__sessionBus.disconnect()
+      this.__sessionBus = null
+    }
     log.info('Stretchly: stopping Do Not Disturb monitoring')
   }
 
-  get _desktopEnviroment () {
-    // https://github.com/electron/electron/issues/40795
+  get _desktopEnvironment () {
     // https://specifications.freedesktop.org/mime-apps-spec/latest/file.html
     // https://specifications.freedesktop.org/menu-spec/latest/onlyshowin-registry.html
-    return process.env.ORIGINAL_XDG_CURRENT_DESKTOP ||
-      process.env.XDG_CURRENT_DESKTOP || 'unknown'
+    return process.env.XDG_CURRENT_DESKTOP || 'unknown'
   }
 
   async _isDndEnabledLinux () {
-    const de = this._desktopEnviroment.toLowerCase()
-
+    const de = this._desktopEnvironment.toLowerCase()
+    const sessionBus = this._getOrCreateSessionBus()
     switch (true) {
       case de.includes('kde'):
         try {
-          const obj = await this.bus.getProxyObject('org.freedesktop.Notifications', '/org/freedesktop/Notifications')
+          const obj = await sessionBus.getProxyObject('org.freedesktop.Notifications', '/org/freedesktop/Notifications')
           const properties = obj.getInterface('org.freedesktop.DBus.Properties')
           const dndEnabled = await properties.Get('org.freedesktop.Notifications', 'Inhibited')
           if (await dndEnabled.value) {
             return true
           }
-        } catch (e) { }
+        } catch (e) {
+          this._logErrorOnce('kde', e)
+        }
         break
       case de.includes('xfce'):
         try {
-          const obj = await this.bus.getProxyObject('org.xfce.Xfconf', '/org/xfce/Xfconf')
+          const obj = await sessionBus.getProxyObject('org.xfce.Xfconf', '/org/xfce/Xfconf')
           const properties = obj.getInterface('org.xfce.Xfconf')
           const dndEnabled = await properties.GetProperty('xfce4-notifyd', '/do-not-disturb')
           if (await dndEnabled.value) {
             return true
           }
-        } catch (e) { }
+        } catch (e) {
+          this._logErrorOnce('xfce', e)
+        }
         break
       case de.includes('gnome') || de.includes('unity'):
         try {
-          const exec = this.util.promisify(require('node:child_process').exec)
-          const { stdout } = await exec('gsettings get org.gnome.desktop.notifications show-banners')
+          const asyncExec = this._getOrCreateAsyncExec()
+          const { stdout } = await asyncExec('gsettings get org.gnome.desktop.notifications show-banners')
           if (stdout.replace(/[^0-9a-zA-Z]/g, '') === 'false') {
             return true
           }
-        } catch (e) { }
+        } catch (e) {
+          this._logErrorOnce('gnome/unity', e)
+        }
         break
       case de.includes('cinnamon'):
         try {
-          const exec = this.util.promisify(require('node:child_process').exec)
-          const { stdout } = await exec('gsettings get org.cinnamon.desktop.notifications display-notifications')
+          const asyncExec = this._getOrCreateAsyncExec()
+          const { stdout } = await asyncExec('gsettings get org.cinnamon.desktop.notifications display-notifications')
           if (stdout.replace(/[^0-9a-zA-Z]/g, '') === 'false') {
             return true
           }
-        } catch (e) { }
+        } catch (e) {
+          this._logErrorOnce('cinnamon', e)
+        }
         break
       case de.includes('mate'):
         try {
-          const exec = this.util.promisify(require('node:child_process').exec)
-          const { stdout } = await exec('gsettings get org.mate.NotificationDaemon do-not-disturb')
+          const asyncExec = this._getOrCreateAsyncExec()
+          const { stdout } = await asyncExec('gsettings get org.mate.NotificationDaemon do-not-disturb')
           if (stdout.replace(/[^0-9a-zA-Z]/g, '') === 'true') {
             return true
           }
-        } catch (e) { }
+        } catch (e) {
+          this._logErrorOnce('mate', e)
+        }
         break
-      case de.includes('lxqt'):
-        return await this._getConfigValue('~/.config/lxqt/notifications.conf', 'doNotDisturb')
+      case de.includes('lxqt'): {
+        const configHome = process.env.XDG_CONFIG_HOME
+        return await this._getConfigValue(
+          join(configHome && isAbsolute(configHome) ? configHome : join(homedir(), '.config'), 'lxqt', 'notifications.conf'),
+          'doNotDisturb'
+        )
+      }
       default:
         if (!this._unsupDEErrorShown) {
-          log.info(`Stretchly: ${this._desktopEnviroment} not supported for DND detection, yet.`)
+          log.info(`Stretchly: ${this._desktopEnvironment} not supported for DND detection, yet.`)
           this._unsupDEErrorShown = true
         }
         return false
     }
+  }
+
+  _getOrCreateSessionBus () {
+    if (!this.__sessionBus) {
+      const bus = dbus.sessionBus()
+      this.__sessionBus = bus
+      bus.on('error', () => { this.__sessionBus = null })
+      bus.on('close', () => { this.__sessionBus = null })
+    }
+    return this.__sessionBus
   }
 
   async _doNotDisturb () {
@@ -119,18 +147,29 @@ class DndManager extends EventEmitter {
       if (process.platform === 'win32') {
         let wfa = 0
         try {
-          wfa = this.windowsFocusAssist.getFocusAssist().value
+          wfa = getFocusAssist().value
         } catch (e) { wfa = -1 } // getFocusAssist() throw an error if OS isn't windows
-        const wqh = this.windowsQuietHours.getIsQuietHours()
-        return wqh || (wfa !== -1 && wfa !== 0)
+        return wfa === 1 || wfa === 2
       } else if (process.platform === 'darwin') {
+        const macOSMajorVersion = parseInt(process.getSystemVersion().split('.')[0])
+        let cmd = ''
+        if (macOSMajorVersion >= 26) {
+          cmd = 'defaults read com.apple.controlcenter "NSStatusItem VisibleCC FocusModes"'
+        } else {
+          cmd = 'defaults read com.apple.controlcenter "NSStatusItem Visible FocusModes"'
+        }
         try {
-          const exec = this.util.promisify(require('node:child_process').exec)
-          const { stdout } = await exec('defaults read com.apple.controlcenter "NSStatusItem Visible FocusModes"')
+          const asyncExec = this._getOrCreateAsyncExec()
+          const { stdout } = await asyncExec(cmd)
           if (stdout.replace(/[^0-9a-zA-Z]/g, '') === '1') {
             return true
           }
-        } catch (e) { }
+        } catch (e) {
+          if (!e.message.includes('The domain/default pair of (com.apple.controlcenter, NSStatusItem VisibleCC FocusModes) does not exist')) {
+            // On macOS Tahoe 26.0, this entry would not exist if no focus mode is enabled
+            this._logErrorOnce('macos', e)
+          }
+        }
       } else if (process.platform === 'linux') {
         return await this._isDndEnabledLinux()
       }
@@ -139,9 +178,16 @@ class DndManager extends EventEmitter {
     }
   }
 
+  _getOrCreateAsyncExec () {
+    if (!this.__asyncExec) {
+      this.__asyncExec = promisify(exec)
+    }
+    return this.__asyncExec
+  }
+
   async _getConfigValue (filePath, key) {
     try {
-      const data = await require('fs').promises.readFile(filePath, 'utf8')
+      const data = await readFile(filePath, 'utf8')
       const lines = data.split('\n')
       for (const line of lines) {
         const [configKey, value] = line.split('=')
@@ -151,7 +197,16 @@ class DndManager extends EventEmitter {
       }
       return false
     } catch (e) {
+      this._logErrorOnce(`config-read-${filePath}`, e)
       return false
+    }
+  }
+
+  _logErrorOnce (environment, error) {
+    const errorKey = `${environment}-${error.code || error.message.substring(0, 20)}`
+    if (!this._errorLogged[errorKey]) {
+      log.error(`Stretchly: DND detection error in ${environment}:`, error)
+      this._errorLogged[errorKey] = true
     }
   }
 
@@ -166,8 +221,8 @@ class DndManager extends EventEmitter {
         this.isOnDnd = false
         this.emit('dndFinished')
       }
-    }, 1000)
+    }, this.monitorDndCheckInterval)
   }
 }
 
-module.exports = DndManager
+export default DndManager

@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Reporter cette pause",
     "skip": "Ignorer cette pause",
-    "title": "Il est temps de faire une pause !"
+    "title": "Il est temps de faire une pause !",
+    "finish": "Terminer cette pause"
   },
   "preferences": {
     "title": "Paramètres de Stretchly",
@@ -83,7 +84,7 @@
       "crystalGlass": "Verre de crystal",
       "windChime": "Tintement aérien",
       "ticToc": "Tic toc",
-      "menubarIcon": "Icône de la barre de menu :",
+      "trayIcon": "Icône de la barre de menu :",
       "colour": "Couleur",
       "monochrome": "Monochrome",
       "invertedMonochrome": "Monochrome inversé",
@@ -107,7 +108,7 @@
       "loveStretchly": "Vous aimez Stretchly ?",
       "desc1": "Il est scientifiquement prouvé que prendre régulièrement des pauses lorsqu'on travaille sur un ordinateur est important pour la santé et le bien-être physique et mental.",
       "desc2": "Stretchly est gratuit, mais vous pouvez nous montrer votre soutien en faisant un don, pour nous aider à continuer à améliorer Stretchly et développer d'autres logiciels libres.",
-      "becomePatron": "Nous soutenir",
+      "becomeContributor": "Nous soutenir",
       "alreadyContributor": "Je suis déjà un contributeur",
       "authenticateUsing": "S'authentifier par :",
       "contributorPreferences": "Préférences de contributeur",
@@ -137,7 +138,7 @@
     "postponeFor": "Reporter de :",
     "maxPostpones": "Nombre de reports maximum :",
     "longBreaks": "Grandes pauses :",
-    "pauseUntilMoring": "Suspendre jusqu'au matin :",
+    "pauseUntilMorning": "Suspendre jusqu'au matin :",
     "pauseUntil": "Suspendre jusqu'à :",
     "pauseUntilMorningInfo": "Spécifiez jusqu'à quelle heure « Suspendre jusqu'au matin » doit suspendre les pauses.",
     "welcomeWindow": "Écran de bienvenue :",

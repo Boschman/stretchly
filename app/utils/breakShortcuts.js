@@ -1,4 +1,4 @@
-const { UntilMorning } = require('./untilMorning')
+import { UntilMorning } from './untilMorning.js'
 
 // Keys are the names of shortcuts in the settings,
 // values are break pause intervals in milliseconds (or null if not applicable)
@@ -27,13 +27,15 @@ function onShortcut ({ name, settings, log, breakPlanner, functions }) {
   switch (name) {
     case 'pauseBreaksToggleShortcut':
       if (breakPlanner.isPaused) {
+        log.info('Stretchly: resuming breaks by shortcut')
         functions.resumeBreaks(false)
       } else {
+        log.info('Stretchly: pausing breaks by shortcut')
         functions.pauseBreaks(1)
       }
       break
     case 'skipToNextScheduledBreakShortcut':
-      log.info('Stretchly: skipping to next scheduled Break by shortcut')
+      log.info('Stretchly: skipping to next scheduled break by shortcut')
       if (breakPlanner._scheduledBreakType === 'break') {
         functions.skipToBreak()
       } else if (breakPlanner._scheduledBreakType === 'microbreak') {
@@ -41,11 +43,11 @@ function onShortcut ({ name, settings, log, breakPlanner, functions }) {
       }
       break
     case 'skipToNextMiniBreakShortcut':
-      log.info('Stretchly: skipping to next Mini Break by shortcut')
+      log.info('Stretchly: skipping to next Mini break by shortcut')
       functions.skipToMicrobreak()
       break
     case 'skipToNextLongBreakShortcut':
-      log.info('Stretchly: skipping to next Long Break by shortcut')
+      log.info('Stretchly: skipping to next Long break by shortcut')
       functions.skipToBreak()
       break
     case 'resetBreaksShortcut':
@@ -53,6 +55,7 @@ function onShortcut ({ name, settings, log, breakPlanner, functions }) {
       functions.resetBreaks()
       break
     default: {
+      log.info(`Stretchly: pausing breaks by shortcut (${name})`)
       const interval = calculateInterval(name, settings)
       functions.pauseBreaks(interval)
       break
@@ -87,7 +90,7 @@ function registerBreakShortcuts ({ settings, log, globalShortcut, breakPlanner, 
   }
 }
 
-module.exports = {
+export {
   calculateInterval,
   onShortcut,
   registerBreakShortcuts,

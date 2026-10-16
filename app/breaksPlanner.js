@@ -1,9 +1,9 @@
-const Scheduler = require('./utils/scheduler')
-const EventEmitter = require('events')
-const NaturalBreaksManager = require('./utils/naturalBreaksManager')
-const DndManager = require('./utils/dndManager')
-const AppExclusionsManager = require('./utils/appExclusionsManager')
-const log = require('electron-log/main')
+import Scheduler from './utils/scheduler.js'
+import EventEmitter from 'events'
+import NaturalBreaksManager from './utils/naturalBreaksManager.js'
+import DndManager from './utils/dndManager.js'
+import AppExclusionsManager from './utils/appExclusionsManager.js'
+import log from 'electron-log/main.js'
 
 class BreaksPlanner extends EventEmitter {
   constructor (settings) {
@@ -13,6 +13,7 @@ class BreaksPlanner extends EventEmitter {
     this.postponesNumber = 0
     this.scheduler = null
     this.isPaused = false
+    this.pollersSuspended = false
     this.naturalBreaksManager = new NaturalBreaksManager(settings)
     this.dndManager = new DndManager(settings)
     this.appExclusionsManager = new AppExclusionsManager(settings)
@@ -79,7 +80,7 @@ class BreaksPlanner extends EventEmitter {
           log.info(`Stretchly: closing current and pausing breaks as 'pause' exclusion found running: '${exclusion}'`)
           this.emit('updateToolTip')
         } else {
-          this.appExclusionsManager.inOnException = false
+          this.appExclusionsManager.isOnAppExclusion = false
         }
       } else if (rule === 'resume') {
         if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak') {
@@ -103,7 +104,7 @@ class BreaksPlanner extends EventEmitter {
           log.info("Stretchly: pausing breaks as no 'resume' exclusion found running")
           this.emit('updateToolTip')
         } else {
-          this.appExclusionsManager.inOnException = true
+          this.appExclusionsManager.isOnAppExclusion = true
         }
       }
     })
@@ -215,6 +216,10 @@ class BreaksPlanner extends EventEmitter {
   pause (milliseconds) {
     this.clear()
     this.isPaused = true
+    this.pollersSuspended = true
+    this.naturalBreaksManager.stop()
+    this.dndManager.stop()
+    this.appExclusionsManager.stop()
     if (milliseconds !== 1) {
       this.scheduler = new Scheduler(() => this.emit('resumeBreaks'), milliseconds, 'resumeBreaks')
       this.scheduler.plan()
@@ -226,6 +231,12 @@ class BreaksPlanner extends EventEmitter {
     this.isPaused = false
     this.appExclusionsManager.reset()
     this.nextBreak()
+    if (this.pollersSuspended) {
+      this.pollersSuspended = false
+      if (this.settings.get('naturalBreaks')) this.naturalBreaksManager.start()
+      if (this.settings.get('monitorDnd')) this.dndManager.start()
+      this.appExclusionsManager.reinitialize(this.settings)
+    }
   }
 
   correctScheduler () {
@@ -272,6 +283,7 @@ class BreaksPlanner extends EventEmitter {
   }
 
   get timeToNextBreak () {
+    if (!this.scheduler) return null
     if (this.scheduler.reference === 'startMicrobreak' || this.scheduler.reference === 'startBreak') {
       return this.scheduler.timeLeft
     }
@@ -287,6 +299,34 @@ class BreaksPlanner extends EventEmitter {
     }
     return null
   }
+
+  get _progressInterval () {
+    if (!this.scheduler) return null
+    const { reference, delay } = this.scheduler
+
+    if (reference === 'startMicrobreak' || reference === 'startBreak') {
+      return delay
+    }
+
+    if (reference === 'startBreakNotification') {
+      return delay + this.settings.get('breakNotificationInterval')
+    }
+
+    if (reference === 'startMicrobreakNotification') {
+      return delay + this.settings.get('microbreakNotificationInterval')
+    }
+
+    return null
+  }
+
+  get progressPercentage () {
+    const total = this._progressInterval
+    const remaining = this.timeToNextBreak
+    if (total === null || total <= 0 || remaining === null) return 0
+
+    const progress = 1 - (remaining / total)
+    return Math.max(0, Math.min(100, Math.round(progress * 100)))
+  }
 }
 
-module.exports = BreaksPlanner
+export default BreaksPlanner

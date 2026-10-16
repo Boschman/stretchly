@@ -8,8 +8,8 @@
     "toBreak": "Descanso largo",
     "toMicrobreak": "Descanso corto",
     "skipToTheNext": "Saltar hasta el siguiente",
-    "resume": "Reanudar",
-    "pause": "Pausar",
+    "resume": "Reanudar descansos",
+    "pause": "Pausar descansos",
     "forHour": "1 hora",
     "for2Hours": "2 horas",
     "for5Hours": "5 horas",
@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Posponer este descanso",
     "skip": "Saltar este descanso",
-    "title": "Hora de hacer un descanso!"
+    "title": "Hora de hacer un descanso!",
+    "finish": "Termina este descanso"
   },
   "preferences": {
     "title": "Configuración de Stretchly",
@@ -53,19 +54,19 @@
     },
     "schedule": {
       "miniBreaks": "Descansos cortos:",
-      "miniBreaksInfo": "Los Descansos cortos son breves pausas que se toman con regularidad para darle la oportunidad de estirarse y relajarse.",
-      "enableMiniBreaks": "Habilitar Descansos cortos",
+      "miniBreaksInfo": "Los descansos cortos son breves pausas que se toman con regularidad para darle la oportunidad de estirarse y relajarse.",
+      "enableMiniBreaks": "Habilitar descansos cortos",
       "breakFor": "Descansar durante:",
       "every": "Cada:",
-      "showNotificationBeforeMiniBreak": "Mostrar notificación antes de que comience un Descanso corto",
-      "enablePostponeMini": "Habilitar postergación para Descansos cortos",
+      "showNotificationBeforeMiniBreak": "Mostrar notificación antes de que comience un descanso corto",
+      "enablePostponeMini": "Habilitar postergación para descansos cortos",
       "longBreaks": "Descansos largos:",
-      "longBreaksInfo": "Los Descansos largos se toman con menos regularidad, pero son de mayor duración, lo que le permite tomar un descanso prolongado de su trabajo.",
-      "enableLongBreaks": "Habilitar Descansos largos",
-      "showNotificationBeforeLongBreak": "Mostrar notificación antes de que comience un Descanso largo",
-      "enablePostponeLong": "Habilitar Postergación para Descansos largos",
+      "longBreaksInfo": "Los descansos largos se toman con menos regularidad, pero son de mayor duración, lo que le permite tomar un descanso prolongado de su trabajo.",
+      "enableLongBreaks": "Habilitar descansos largos",
+      "showNotificationBeforeLongBreak": "Mostrar notificación antes de que comience un descanso largo",
+      "enablePostponeLong": "Habilitar postergación para Descansos largos",
       "strictMode": "Modo estricto:",
-      "strictModeInfo": "El Modo estricto evita que te saltes los Descansos cortos o largos y está diseñado para ayudar a la disciplina.",
+      "strictModeInfo": "El modo estricto impide que se salte los Descansos cortos o los Descansos largos y está diseñado para ayudar a mantener la disciplina.",
       "enableStrictMini": "Habilitar Modo estricto para Descansos cortos",
       "enableStrictLong": "Habilitar Modo estricto para Descansos largos",
       "cantDisableBoth": "No puedes deshabilitar los dos tipos de descansos"
@@ -83,12 +84,17 @@
       "crystalGlass": "Copa de cristal",
       "windChime": "Campanilla de viento",
       "ticToc": "Tic, tac",
-      "menubarIcon": "Icono de barra de menú:",
+      "trayIcon": "Icono de barra de menú:",
       "colour": "Color",
       "monochrome": "Monocromático",
       "invertedMonochrome": "Monocromático invertido",
       "snowWhite": "Blanco nieve",
-      "reverie": "Ensueño"
+      "reverie": "Ensueño",
+      "silence": "Silencio",
+      "trayIconStyleLabel": "Estilo:",
+      "trayIconStyleDefault": "Predeterminado",
+      "trayIconStyleTime": "Tiempo hasta descanso",
+      "trayIconStyleProgress": "Progreso para descanso"
     },
     "about": {
       "tagline": "Aplicación para notificar cuándo hacer descansos",
@@ -107,7 +113,7 @@
       "loveStretchly": "¿Te encanta tu Stretchly?",
       "desc1": "Está científicamente comprobado que tomar descansos regulares al usar una computadora es importante para su bienestar físico y mental.",
       "desc2": "Stretchly es gratis. Pero puedes brindar tu apoyo donando y ayudándonos a continuar mejorando Stretchly y lanzando otro software gratuito.",
-      "becomePatron": "Conviértete en un patrocinador",
+      "becomeContributor": "Conviértete en un patrocinador",
       "alreadyContributor": "Ya soy colaborador",
       "authenticateUsing": "Autenticar usando:",
       "contributorPreferences": "Configuración de colaborador",
@@ -135,9 +141,9 @@
     "miniBreaks": "Descansos cortos:",
     "postponableFor": "Aplazable durante:",
     "postponeFor": "Aplazar durante:",
-    "maxPostpones": "Número máximo de aplazamientos:",
+    "maxPostpones": "Máximo de aplazamientos:",
     "longBreaks": "Descansos largos:",
-    "pauseUntilMoring": "Pausa hasta la mañana:",
+    "pauseUntilMorning": "Pausa hasta la mañana:",
     "pauseUntil": "Pausa hasta:",
     "pauseUntilMorningInfo": "Especifique hasta qué hora debe detenerse 'Pausa hasta mañana'.",
     "welcomeWindow": "Ventana de bienvenida:",
@@ -151,8 +157,8 @@
     "breakWindowHeight": "Alto:",
     "sounds": "Sonidos:",
     "volume": "Volumen:",
-    "miniBreakStartSound": "Reproducir sonido de final de pausa también al comienzo de Descanso corto",
-    "longBreakStartSound": "Reproducir sonido de final de pausa también al comienzo de Descanso largo",
+    "miniBreakStartSound": "Sonido al iniciar el Descanso corto",
+    "longBreakStartSound": "Sonido al iniciar el Descanso largo",
     "naturalBreaks": "Descansos naturales:",
     "naturalBreaksInfo": "Si el monitor del tiempo de inactividad está habilitado en las Preferencias principales, puede especificar después de qué tiempo se deben pausar los descansos.",
     "pauseAfter": "Pausa después:",
@@ -167,35 +173,36 @@
     "screenInfo": "Cuando se deshabilita la visualización de pausas en todos los monitores, puede elegir en cuál le gustaría mostrar sus pausas.",
     "screen": "Monitor para descansos:",
     "showBreaksAsRegularWindows": "Muestra descansos como ventanas normales",
-    "showBreaksAsRegularWindowsInfo": "Cuando está habilitado, las ventanas de ruptura se volverán enfocables, ya no estarán 'Siempre arriba' y también aparecerán en la barra de tareas.",
+    "showBreaksAsRegularWindowsInfo": "Cuando está habilitado, las ventanas de descanso podrán recibir foco; ya no estarán \"Siempre en primer plano\" y también aparecerán en la barra de tareas.",
     "timeToBreakInTray": "Hora de descansar",
     "showTimeToBreakInTray": "Muestra la hora del siguiente descanso en el icono de la barra de menú",
     "currentTimeInBreaks": "Hora actual",
     "showCurrentTimeInBreaks": "Mostrar la hora local actual en la ventana de descanso",
-    "showTrayIcon": "Mostrar el icono de la barra de menú",
-    "toShowTrayIcon": "Mostrar el icono de Stretchly en la barra de menú"
+    "showTrayIcon": "Mostrar icono en la bandeja del sistema",
+    "toShowTrayIcon": "Mostrar el icono de Stretchly en la bandeja del sistema"
   },
   "utils": {
     "none_one": "{{count}}",
-    "none_many": "",
+    "none_many": "{{count}}",
     "none_other": "{{count}}",
     "percent_one": "{{count}} por ciento",
-    "percent_many": "",
+    "percent_many": "{{count}} por ciento",
     "percent_other": "{{count}} por ciento",
     "oclock_one": "{{count}} en punto",
-    "oclock_many": "",
+    "oclock_many": "{{count}} en punto",
     "oclock_other": "{{count}} en punto",
     "seconds_one": "{{count}} segundo",
-    "seconds_many": "",
+    "seconds_many": "{{count}} segundos",
     "seconds_other": "{{count}} segundos",
     "minutes_one": "{{count}} minuto",
-    "minutes_many": "",
+    "minutes_many": "{{count}} minutos",
     "minutes_other": "{{count}} minutos",
     "hours_one": "{{count}} hora",
     "hours_many": "{{count}} horas",
     "hours_other": "{{count}} horas",
     "remaining": "{{count}} restantes",
-    "inAbout": "aproximadamente en {{count}}"
+    "inAbout": "aproximadamente en {{count}}",
+    "elapsed": "{{count}} transcurridos"
   },
   "process": {
     "newVersionAvailable": "¡Nueva versión disponible!"
@@ -213,9 +220,9 @@
     "dndMode": "No molestar está activado",
     "nextLongBreak": "Próximo Descanso largo",
     "nextMiniBreak": "Próximo Descanso corto",
-    "afterMiniBreak_one": "después de {{count}} pequeño descanso",
-    "afterMiniBreak_many": "después de {{count}} pequeños descansos",
-    "afterMiniBreak_other": "después de {{count}} pequeños descansos",
+    "afterMiniBreak_one": "después de {{count}} Descanso corto",
+    "afterMiniBreak_many": "después de {{count}} Descansos cortos",
+    "afterMiniBreak_other": "después de {{count}} Descansos cortos",
     "resuming": "Reanudando",
     "appExclusion": "Regla de exclusión de aplicación"
   },
@@ -514,6 +521,10 @@
     "abi": {
       "title": "Visualización creativa",
       "text": "Cierra los ojos e imagínate en un lugar tranquilo y relajante, como una playa o un bosque, concentrándote en las imágenes, los sonidos y las sensaciones de ese entorno."
+    },
+    "abj": {
+      "title": "¿Abrumado?",
+      "text": "Prueba la técnica 5-4-3-2-1: Identifica 5 cosas que puedes ver, 4 cosas que puedes tocar, 3 cosas que puedes escuchar, 2 cosas que puedes oler y 1 cosa que puedes saborear."
     }
   }
 }

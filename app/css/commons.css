@@ -157,8 +157,13 @@ body {
 .linux .linux-hidden,
 .freebsd .linux-hidden,
 .openbsd .linux-hidden,
-.store .store-hidden {
+.store .store-hidden,
+.portable .portable-hidden {
   display: none;
+}
+
+.hidden {
+  display: none !important;
 }
 
 a {

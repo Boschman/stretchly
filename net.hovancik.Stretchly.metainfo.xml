@@ -24,7 +24,7 @@
   <screenshots>
     <screenshot type="default">
       <image>https://hovancik.net/stretchly/img/flathub/minibreak.png</image>
-      <caption>Stretchly Mini Break screen</caption>
+      <caption>Stretchly Mini break screen</caption>
     </screenshot>
     <screenshot>
       <image>https://hovancik.net/stretchly/img/flathub/welcome.png</image>
@@ -36,6 +36,139 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.22.1" date="2026-08-13">
+      <description>
+        <p>Changed</p>
+        <ul>
+          <li>updated many translations</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>tray icon system theme now follows the Windows mode used by the taskbar instead of the default app mode</li>
+          <li>Do Not Disturb no longer stays active when Windows Focus Assist is unsupported</li>
+          <li>improve LXQt DND detection</li>
+          <li>snap build</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.22.0" date="2026-07-17">
+      <description>
+        <p>Added</p>
+        <ul>
+          <li>Windows installer now adds <code>stretchly</code> to PATH so CLI commands (e.g. <code>stretchly pause</code>) can be run from any terminal without specifying the full executable path</li>
+          <li>advanced option <code>breakContentScreen</code> to show break countdown/idea only on the primary, cursor, or a specific screen while other screens stay blanked</li>
+          <li>advanced option <code>trayIconThemeSource</code> (<code>system</code>, <code>light</code>, or <code>dark</code>) to set the tray icon's light or dark variant</li>
+          <li>advanced options <code>monitorDndCheckInterval</code> and <code>naturalBreaksCheckInterval</code> to tune how often Do Not Disturb and idle time are checked</li>
+        </ul>
+        <p>Changed</p>
+        <ul>
+          <li>tray icon now follows the light/dark theme automatically; the manual "Inverted Monochrome" option was removed</li>
+          <li>improved tray icons</li>
+          <li>reduced background polling for Do Not Disturb, natural breaks, and app exclusions to 2 seconds to lower energy usage (<code>appExclusionsCheckInterval</code> default raised from <code>1000</code> to <code>2000</code>)</li>
+          <li>reduced CPU and energy usage during breaks</li>
+          <li>Do Not Disturb, natural breaks, and app exclusion monitoring are stopped while breaks are paused, to lower energy usage</li>
+          <li>disable new end break shortcut registrations on native Wayland, where they could remain active after breaks and block the shortcut in other apps</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>fix Windows notifications not using Stretchly's name and icon when started via the <code>stretchly</code> command</li>
+          <li>fix crashes on system unlock</li>
+          <li>fix window icon turning monochrome with the monochrome tray icon setting</li>
+          <li>fix custom title for Mini break from command line</li>
+          <li>fix repeated crash windows after an error</li>
+          <li>improve double-click error prevention in breaks</li>
+          <li>fix fullscreen breaks dropping out of their Space after a few seconds on macOS</li>
+          <li>fix app exclusion state not updating in some cases</li>
+          <li>fix text selection on break screens allowing escape via the macOS force-click dictionary</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.21.0" date="2026-04-25">
+      <description>
+        <p>Added</p>
+        <ul>
+          <li>advanced option for Break Health Mode</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>fix focus mode detection on macOS Tahoe</li>
+          <li>fix idle time detection on Wayland</li>
+        </ul>
+        <p>Changed</p>
+        <ul>
+          <li>increased font size of current time in break window</li>
+          <li>moved macOS Homebrew installation to custom tap</li>
+          <li>improved tray icon styling</li>
+          <li>updated many translations</li>
+        </ul>        
+      </description>
+    </release>
+    <release version="1.20.0" date="2025-12-24">
+      <description>
+        <p>Added</p>
+        <ul>
+          <li>new icon styles preference for tray (showing time to break or visual progress to break)</li>
+          <li>Autostart functionality in Flatpaks</li>
+          <li>portable version for Windows</li>
+          <li>set autostart based on the config file value</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>snap package not starting on Wayland</li>
+          <li>break windows not closing correctly on all platforms</li>
+          <li>show breaks as regular windows on Windows</li>
+        </ul>
+        <p>Changed</p>
+        <ul>
+          <li>updated many translations</li>
+        </ul>        
+      </description>
+    </release>
+    <release version="1.19.0" date="2025-11-13">
+      <description>
+        <p>Added</p>
+        <ul>
+          <li>allow showing limited HTML in breaks</li>
+          <li>advanced option for manual finish mode (user must finish break)</li>
+          <li>advanced option to set preferred sound at beginning of breaks</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>hide autostart option for Windows Store build</li>
+          <li>memory issue where break windows were not closing correctly</li>
+        </ul>
+        <p>Changed</p>
+        <ul>
+          <li>update features hidden by default in Windows Store, Snap and Flatpak builds</li>
+          <li>migrated long break sound preference from <code>audio</code> to <code>longBreakAudio</code></li>
+          <li>updated many translations</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.18.0" date="2025-9-15">
+      <description>
+        <p>Added</p>
+        <ul>
+          <li>Yiddish and Tamil translations</li>
+          <li>advanced option to show custom message in Preferences</li>
+          <li>advanced option to hide location of Preferences file in Debug info</li>
+          <li>advanced option to disable app update features</li>
+          <li>advanced option to hide Strict Mode preferences section</li>
+        </ul>
+        <p>Changed</p>
+        <ul>
+          <li>remove flags in Welcome window</li>
+          <li>updated many translations</li>
+          <li>do not check for Quiet Hours on Windows (deprecated)</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>prevent error with negative time to break in tray icon</li>
+          <li>hide close/minimize actions on Break window on macOS</li>
+          <li>issue when not all strings correctly translate after language change</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.17.2" date="2025-1-19">
       <description>
         <p>Fixed</p>
@@ -149,8 +282,8 @@
         <ul>
           <li>new break ideas</li>
           <li>ability to open Preferences window from command line</li>
-          <li>advanced option to set different sounds for Mini and Long Breaks</li>
-          <li>advanced option to set different color theme for Mini and Long Breaks</li>
+          <li>advanced option to set different sounds for Mini and Long breaks</li>
+          <li>advanced option to set different color theme for Mini and Long breaks</li>
         </ul>
         <p>Fixed</p>
         <ul>

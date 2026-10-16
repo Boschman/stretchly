@@ -1,6 +1,6 @@
-const EventEmitter = require('events')
-const log = require('electron-log/main')
-const psList = require('ps-list')
+import EventEmitter from 'events'
+import log from 'electron-log/main.js'
+import psList from 'ps-list'
 
 class AppExclusionsManager extends EventEmitter {
   constructor (settings) {
@@ -26,8 +26,16 @@ class AppExclusionsManager extends EventEmitter {
   }
 
   start () {
+    if (this.timer) return
     this._checkRunningExceptions()
     log.info('Stretchly: starting App exclusions monitoring')
+  }
+
+  stop () {
+    if (!this.timer) return
+    clearInterval(this.timer)
+    this.timer = null
+    log.info('Stretchly: stopping App exclusions monitoring')
   }
 
   reset () {
@@ -77,4 +85,4 @@ class AppExclusionsManager extends EventEmitter {
   }
 }
 
-module.exports = AppExclusionsManager
+export default AppExclusionsManager

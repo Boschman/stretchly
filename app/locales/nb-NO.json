@@ -50,7 +50,7 @@
     "breakWindowSize": "Pausevindusstørrelse",
     "opacity": "Dekkevne:",
     "opacityTheme": "Draktgjennomsiktighet:",
-    "pauseUntilMoring": "Utsett til i morgen:",
+    "pauseUntilMorning": "Utsett til i morgen:",
     "pauseUntil": "Utsett til:",
     "welcomeWindow": "Velkomstvindu:",
     "longBreaks": "Lange pauser:",
@@ -83,7 +83,7 @@
       "syncPreferences": "Synkroniseringsinnstillinger",
       "authenticateUsing": "Legitimer deg med:",
       "alreadyContributor": "Jeg er allerede en bidragsyter",
-      "becomePatron": "Bli en kroneruller",
+      "becomeContributor": "Bli en kroneruller",
       "loveStretchly": "Elsker du Stretchly?"
     },
     "about": {
@@ -103,7 +103,7 @@
       "invertedMonochrome": "Invertert ensfarget",
       "monochrome": "Ensfarget",
       "colour": "Mangefarget",
-      "menubarIcon": "Ikoner på menylinjen:",
+      "trayIcon": "Ikoner på menylinjen:",
       "ticToc": "Tikk-takk",
       "windChime": "Vindspill",
       "crystalGlass": "Krystallglass",

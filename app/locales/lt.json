@@ -39,7 +39,7 @@
       "morningSwim": "Rytinis pasiplaukiojimas",
       "snowWhite": "Sniego baltumo",
       "colour": "Spalva",
-      "menubarIcon": "Meniu juostos piktograma:",
+      "trayIcon": "Meniu juostos piktograma:",
       "ticToc": "Tik tak",
       "windChime": "Vėjo skambesys",
       "crystalGlass": "Krištolo stiklas",
@@ -107,7 +107,7 @@
       "contributorPreferences": "Nuostatos rėmėjams",
       "authenticateUsing": "Tapatybės patvirtinimas naudojant:",
       "alreadyContributor": "Aš jau prisidėjau",
-      "becomePatron": "Paremti",
+      "becomeContributor": "Paremti",
       "desc2": "Stretchly yra nemokama. Tačiau galite paremti aukodami ir padėti mums toliau tobulinti Stretchly bei leisti kitą nemokamą programinę įrangą.",
       "desc1": "Moksliškai įrodyta, kad reguliarios pertraukos naudojantis kompiuteriu yra svarbios jūsų fizinei ir psichinei savijautai.",
       "loveStretchly": "Ar patinka Stretchly?"
@@ -144,7 +144,7 @@
     "welcomeWindow": "Pasveikinimo langas:",
     "pauseUntilMorningInfo": "Nurodykite, iki kurios valandos „Pristabdyti iki ryto“ turėtų pristabdyti.",
     "pauseUntil": "Pristabdyti iki:",
-    "pauseUntilMoring": "Pristabdyti iki ryto:",
+    "pauseUntilMorning": "Pristabdyti iki ryto:",
     "longBreaks": "Ilgos pertraukos:",
     "maxPostpones": "Didžiausias atidėjimų skaičius:",
     "postponeFor": "Atidėti:",
@@ -271,7 +271,7 @@
       "text": "Skirkite šiek tiek laiko pagalvoti apie tai, ką vertinate."
     },
     "aan": {
-      "text": "Nusišypsokite būdami gyvi."
+      "text": "Gyvybingai nusišypsokite."
     },
     "aao": {
       "text": "Tikrai ergonomiška darbo vieta yra tokia, nuo kurios reguliariai atsitraukiate."
@@ -304,7 +304,7 @@
       "text": "Ar jūsų dėmesys naudojamas protingai?"
     },
     "aba": {
-      "text": "Pakeiskite savo sėdėjimo pozą."
+      "text": "Pakeiskite savo sėdėjimo padėtį."
     },
     "abb": {
       "text": "Atskleiskite akis natūraliai šviesai."
@@ -513,6 +513,10 @@
     "abi": {
       "title": "Įsivaizdavimas",
       "text": "Užsimerkite ir įsivaizduokite save ramioje, raminančioje vietoje, pavyzdžiui, paplūdimyje ar miške, ir susitelkite į šios aplinkos vaizdus, garsus ir pojūčius."
+    },
+    "abj": {
+      "title": "Užvaldė emocijos?",
+      "text": "Išbandykite įsižeminimo pratimą „5-4-3-2-1“: pastebėkite 5 dalykus, kuriuos matote, 4 – paliečiamus, 3 – skleidžiančius garsą, 2 – kvepiančius ir vieną, kurį galėtumėte paragauti."
     }
   }
 }

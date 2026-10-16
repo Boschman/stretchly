@@ -6,13 +6,124 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Yiddish translations
+- CLI commands to postpone, skip and finish the current break
+- advanced preferences for custom break sounds
+
+### Fixed
+- fix debug file and folder links when paths contain HTML special characters
+- fix custom break images when the user data path contains URL special characters
+- fix snap startup crash
+- improve Linux desktop integration
+- time-to-break tray icon no longer requests a missing number icon when more than 99 minutes remain
+
+### Changed
+- macOS Ventura (13) or later is now required
+- macOS app bundles are now ad-hoc signed
+- updated many translations
+
+## [1.22.1] - 2026-08-13
+### Fixed
+- tray icon system theme now follows the Windows mode used by the taskbar instead of the default app mode
+- Do Not Disturb no longer stays active when Windows Focus Assist is unsupported
+- improve LXQt DND detection
+- snap build
+
+### Changed
+- updated many translations
+
+## [1.22.0] - 2026-07-17
+### Added
+- Windows installer now adds `stretchly` to PATH so CLI commands (e.g. `stretchly pause`) can be run from any terminal without specifying the full executable path
+- advanced option `breakContentScreen` to show break countdown/idea only on the primary, cursor, or a specific screen while other screens stay blanked
+- advanced option `trayIconThemeSource` (`system`, `light`, or `dark`) to set the tray icon's light or dark variant
+- advanced options `monitorDndCheckInterval` and `naturalBreaksCheckInterval` to tune how often Do Not Disturb and idle time are checked
+
+### Changed
+- tray icon now follows the light/dark theme automatically; the manual "Inverted Monochrome" option was removed
+- improved tray icons
+- reduced background polling for Do Not Disturb, natural breaks, and app exclusions to 2 seconds to lower energy usage (`appExclusionsCheckInterval` default raised from `1000` to `2000`)
+- reduced CPU and energy usage during breaks
+- Do Not Disturb, natural breaks, and app exclusion monitoring are stopped while breaks are paused, to lower energy usage
+- disable new end break shortcut registrations on native Wayland, where they could remain active after breaks and block the shortcut in other apps
+
+### Fixed
+- fix Windows notifications not using Stretchly's name and icon when started via the `stretchly` command
+- fix crashes on system unlock
+- fix window icon turning monochrome with the monochrome tray icon setting
+- fix custom title for Mini break from command line
+- fix repeated crash windows after an error
+- improve double-click error prevention in breaks
+- fix fullscreen breaks dropping out of their Space after a few seconds on macOS
+- fix app exclusion state not updating in some cases
+- fix text selection on break screens allowing escape via the macOS force-click dictionary
+
+## [1.21.0] - 2026-04-25
+### Added
+- advanced option for Break Health Mode
+
+### Fixed
+- fix focus mode detection on macOS Tahoe
+- fix idle time detection on Wayland
+
+### Changed
+- increased font size of current time in break window
+- moved macOS Homebrew installation to custom tap
+- improved tray icon styling
+- updated many translations
+
+## [1.20.0] - 2025-12-24
+### Added
+- new icon styles preference for tray (showing time to break or visual progress to break)
+- Autostart functionality in Flatpaks
+- portable version for Windows
+- set autostart based on the config file value
+
+### Fixed
+- snap package not starting on Wayland
+- break windows not closing correctly on all platforms
+- show breaks as regular windows on Windows
+
+### Changed
+- updated many translations
+
+## [1.19.0] - 2025-11-13
+### Added
+- allow to show some HTML in breaks
+- advanced option for manual finish mode for breaks (breaks are only finished after user's interaction)
+- advanced option to set preferred sound to be played at the beginning of breaks
+
+### Fixed
+- hide autostart option for Windows store
+- prevent memory issues where break windows were not closing correctly
+
+### Changed
+- hide update features in Windows Store, Snap, Flatpak versions by default
+- migrate long break sound preference from `audio` to `longBreakAudio`
+- updated many translations
+
+## [1.18.1] - 2025-9-27
+### Fixed
+- fix Linux crashes on app start
+- fix Linux issue with dbus overload
+
+### Changed
+- updated many translations
+
+## [1.18.0] - 2025-9-15
+### Added
+- Yiddish and Tamil translations
+- advanced option to show custom message in Preferences
+- advanced option to hide location of Preferences file in Debug info
+- advanced option to disable app update features
+- advanced option to hide Strict Mode preferences section
 
 ### Changed
 - remove flags in Welcome window
 - updated many translations
+- do not check for Quiet Hours on Windows (deprecated)
 
 ### Fixed
+- prevent error with negative time to break in tray icon
 - hide close/minimize actions on Break window on macOS
 - issue when not all strings correctly translate after language change
 
@@ -102,8 +213,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - new break ideas
 - ability to open Preferences window from command line
-- advanced option to set different sounds for Mini and Long Breaks
-- advanced option to set different color theme for Mini and Long Breaks
+- advanced option to set different sounds for Mini and Long breaks
+- advanced option to set different color theme for Mini and Long breaks
 
 ## Fixed
 - error when checking for new version fails
@@ -349,7 +460,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - updated German translation
 - updated Polish translation
 - updated Chinese translations
-- bigger range for Mini Break duration
+- bigger range for Mini break duration
 - preferences navigation menu visible when scrolling down
 
 ## [1.0.0] - 2020-07-18
@@ -795,7 +906,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - resume/pause functionality for reminder
 - scripts for creating installers for OS X, Windows, Linux
 
-[Unreleased]: https://github.com/hovancik/stretchly/compare/v1.17.2...HEAD
+[Unreleased]: https://github.com/hovancik/stretchly/compare/v1.22.1...HEAD
+[1.22.1]: https://github.com/hovancik/stretchly/compare/v1.22.0...v1.22.1
+[1.22.0]: https://github.com/hovancik/stretchly/compare/v1.21.0...v1.22.0
+[1.21.0]: https://github.com/hovancik/stretchly/compare/v1.20.0...v1.21.0
+[1.20.0]: https://github.com/hovancik/stretchly/compare/v1.19.0...v1.20.0
+[1.19.0]: https://github.com/hovancik/stretchly/compare/v1.18.1...v1.19.0
+[1.18.1]: https://github.com/hovancik/stretchly/compare/v1.18.0...v1.18.1
+[1.18.0]: https://github.com/hovancik/stretchly/compare/v1.17.2...v1.18.0
 [1.17.2]: https://github.com/hovancik/stretchly/compare/v1.17.1...v1.17.2
 [1.17.1]: https://github.com/hovancik/stretchly/compare/v1.17.0...v1.17.1
 [1.17.0]: https://github.com/hovancik/stretchly/compare/v1.16.0...v1.17.0

@@ -19,7 +19,7 @@
     "welcomeWindow": "หน้าต่างต้อนรับ:",
     "pauseUntilMorningInfo": "ระบุเวลาว่าตัวเลือก \"หยุดชั่วคราวถึงเช้า\" จะสิ้นสุดเมื่อไหร่",
     "pauseUntil": "หยุดชั่วคราวจนถึง:",
-    "pauseUntilMoring": "หยุดชั่วคราวจนถึงเช้า:",
+    "pauseUntilMorning": "หยุดชั่วคราวจนถึงเช้า:",
     "longBreaks": "การพักใหญ่:",
     "maxPostpones": "เลื่อนได้มากสุด:",
     "postponeFor": "เลื่อนเป็นเวลา:",
@@ -43,7 +43,9 @@
     "breakWindowWidth": "ความกว้าง:",
     "breakWindowSizeInfo": "ต้องการให้หน้าจอพักใช้พื้นที่กี่เปอร์เซนต์ของหน้าจอ?",
     "breakWindowHeight": "ความสูง:",
-    "light": "สว่าง"
+    "light": "สว่าง",
+    "naturalBreaksInfo": "หากเปิดการใช้งานตัวนับเวลาที่พักในการปรับแต่ง, คุณสามารถระบุดวลาได้ว่ากี่โมงถึงจะหยุดการพักชั่วคราว.",
+    "primary": "จอมอนิเตอร์หลัก"
   },
   "preferences": {
     "heart": {
@@ -51,7 +53,7 @@
       "contributorPreferences": "การตั้งค่าสำหรับผู้สนับสนุน",
       "authenticateUsing": "ยืนยันตัวตนด้วย:",
       "alreadyContributor": "ฉันร่วมสนับสนุนก่อนหน้านี้แล้ว",
-      "becomePatron": "ร่วมสนับสนุน",
+      "becomeContributor": "ร่วมสนับสนุน",
       "desc2": "Stretchly เป็นแอปฟรี แต่คุณสามารถช่วยเหลือเราได้ด้วยการบริจาค เพื่อให้เราสามารถปรับปรุง Stretchly และสร้างแอปฟรีอื่นๆ ได้เพิ่มเติม",
       "desc1": "มีหลักฐานทางวิทยาศาสตร์ยืนยันว่าการพักเป็นประจำระหว่างการใช้งานคอมพิวเตอร์เป็นสิ่งสำคัญต่อสุขภาพร่างกายและสุขภาพจิตใจที่ดี",
       "loveStretchly": "ชอบ Stretchly ใช่ไหม?"
@@ -74,7 +76,7 @@
       "invertedMonochrome": "ขาวดำแบบสลับสี",
       "monochrome": "ขาวดำ",
       "colour": "สี",
-      "menubarIcon": "ไอคอนบริเวณเมนูบาร์:",
+      "trayIcon": "ไอคอนบริเวณเมนูบาร์:",
       "ticToc": "ติ๊กตอก",
       "windChime": "กระดิ่งลม",
       "crystalGlass": "เคาะแก้ว",
@@ -86,7 +88,12 @@
       "graphiteCrystal": "ผลึกแกรไฟต์",
       "greenClouds": "นภาเขียว",
       "autumnBeBlessed": "สุขุมยามผลัดใบ",
-      "appearance": "หน้าตา:"
+      "appearance": "หน้าตา:",
+      "silence": "เงียบสงัด",
+      "trayIconStyleLabel": "สไตล์:",
+      "trayIconStyleDefault": "ค่าเริ่มต้น",
+      "trayIconStyleTime": "ระยะเวลาที่พัก",
+      "trayIconStyleProgress": "ความคืบหน้าการพัก"
     },
     "schedule": {
       "cantDisableBoth": "คุณไม่สามารถปิดทั้งการพักใหญ่และการพักย่อยพร้อมกันได้",
@@ -131,7 +138,8 @@
   "break": {
     "title": "ได้เวลาพักแล้วจ้า!",
     "skip": "ข้ามการพักนี้",
-    "postpone": "เลื่อนการพักนี้ออกไปก่อน"
+    "postpone": "เลื่อนการพักนี้ออกไปก่อน",
+    "finish": "สิ้นสุดการพัก"
   },
   "main": {
     "syncPreferences": "ตั้งค่าการซิงก์",
@@ -171,7 +179,6 @@
     "paused": "หยุด",
     "dndMode": "อยู่ในโหมดห้ามรบกวน",
     "appExclusion": "แอพที่ได้รับยกเว้น",
-    "afterMiniBreak_one": "หลังจากการพักสั้นอีก {{count}} ครั้ง",
     "afterMiniBreak_other": "หลังจากการพักสั้นอีก {{count}} ครั้ง",
     "resuming": "ทำต่อ",
     "nextMiniBreak": "การพักสั้นครั้งหน้า",
@@ -186,6 +193,12 @@
     },
     "aac": {
       "text": "เงยขึ้น และก้มลงอย่างช้าๆ"
+    },
+    "aad": {
+      "text": "หลับตาลง และหายใจเข้าลึกๆสักนิด"
+    },
+    "aae": {
+      "text": "หลับตาลงและผ่อนคลาย"
     }
   },
   "longBreakIdeas": {
@@ -249,6 +262,6 @@
     "newVersionAvailable": "เวอร์ชันใหม่ออกมาแล้ว!"
   },
   "utils": {
-    "none_one": "{{count}}"
+    "none_other": ""
   }
 }

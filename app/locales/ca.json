@@ -66,7 +66,7 @@
       "windChime": "Repic de vent",
       "ticToc": "Tic toc",
       "reverie": "Somieig",
-      "menubarIcon": "Icona del menú:",
+      "trayIcon": "Icona del menú:",
       "colour": "Color",
       "invertedMonochrome": "Monocrom invertit",
       "graphiteCrystal": "Cristall de grafit",
@@ -90,7 +90,7 @@
       "learnMore": "Per saber més de les funcions de Stretchly, mireu un tutorial, descarregueu l'última versió o contacteu-nos per obtenir assistència, "
     },
     "heart": {
-      "becomePatron": "Fes-te Patron",
+      "becomeContributor": "Fes-te Patron",
       "alreadyContributor": "Ja soc un contribuïdor",
       "authenticateUsing": "Autenticar usant:",
       "contributorPreferences": "Preferències de Contribuïdor",
@@ -121,7 +121,7 @@
     "postponeFor": "Ajornar per:",
     "maxPostpones": "Màxim nombre d'ajornaments:",
     "longBreaks": "Pauses Llargues:",
-    "pauseUntilMoring": "Aturar fins el matí:",
+    "pauseUntilMorning": "Aturar fins el matí:",
     "pauseUntil": "Aturar fins:",
     "pauseUntilMorningInfo": "Especificar fins quina hora hauria d'aturar-se 'Aturar fins el matí'.",
     "welcomeWindow": "Finestra de benvinguda:",
@@ -341,6 +341,10 @@
     "abf": {
       "title": "Palmells",
       "text": "Mentre seguis, recolza els colzes a la taula, a prop de la vora. Deixa caure el pes cap endavant i cobreix-te els ulls amb les mans. Tanca els ulls i inspira lentament pel nas i aguanta la respiració uns segons. Continua respirant profundament."
+    },
+    "abj": {
+      "title": "Aclaparat?",
+      "text": "Prova la tècnica de connexió 5-4-3-2-1: Identifica 5 coses que puguis veure, 4 coses que puguis tocar, 3 coses que pots sentir, 2 coses que pots olorar, i 1 cosa que pots tastar."
     }
   },
   "statusMessages": {

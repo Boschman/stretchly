@@ -44,7 +44,7 @@
       "invertedMonochrome": "Renkleri ters çevrilmiş siyah beyaz",
       "monochrome": "Siyah beyaz",
       "colour": "Renk",
-      "menubarIcon": "Menü çubuğu ikonu:",
+      "trayIcon": "Menü çubuğu ikonu:",
       "enableSounds": "Sesleri etkinleştir",
       "sounds": "Sesler:",
       "transparentMode": "Saydamlığı ayarla",
@@ -107,7 +107,7 @@
       "contributorPreferences": "Katılımcı Tercihleri",
       "authenticateUsing": "Tasdik etme yöntemi:",
       "alreadyContributor": "Zaten katkıda bulunuyorum",
-      "becomePatron": "Destekçi ol",
+      "becomeContributor": "Destekçi ol",
       "desc2": "Stretchly ücretsiz. Ama Stretchly'i geliştirmeye devam etmemiz veya diğer özgür yazılımları geliştirmemize katkı sağlamak için bize bağış yapabilirsiniz.",
       "desc1": "Bilgisayar kullanırken düzenli mola vermenin fiziksel ve zihinsel iyiliğiniz için yararlı olduğu bilimsel olarak kanıtlanmıştır.",
       "loveStretchly": "Strechly'i seviyor musunuz?"
@@ -161,7 +161,7 @@
     "welcomeWindow": "Hoşgeldin penceresi:",
     "pauseUntilMorningInfo": "'Sabaha kadar durdur'un hangi saate kadar durduracağını seçin.",
     "pauseUntil": "Bu süreye kadar durdur:",
-    "pauseUntilMoring": "Sabaha kadar durdur:",
+    "pauseUntilMorning": "Sabaha kadar durdur:",
     "longBreaks": "Uzun Molalar:",
     "maxPostpones": "Maksimum erteleme limiti:",
     "postponeFor": "Bu kadar süreyle ertele:",
@@ -506,6 +506,10 @@
     "abi": {
       "title": "Hayali görselleştirme",
       "text": "Gözlerinizi kapatın ve kendinizi plaj veya orman gibi huzurlu ve sakinleştirici bir yerde hayal edin, o ortamın görüntülerine, seslerine ve hislerine odaklanın."
+    },
+    "abj": {
+      "title": "Bunaldınız mı?",
+      "text": "5-4-3-2-1 Topraklama Tekniğini deneyin: Görebildiğiniz 5 şeyi, dokunabileceğiniz 4 şeyi, duyabileceğiniz 3 şeyi, koklayabileceğiniz 2 şeyi ve tadabileceğiniz 1 şeyi belirleyin."
     }
   }
 }

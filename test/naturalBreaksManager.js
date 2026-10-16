@@ -3,7 +3,7 @@ import { join } from 'path'
 import NaturalBreaksManager from '../app/utils/naturalBreaksManager'
 import Store from 'electron-store'
 import defaultSettings from '../app/utils/defaultSettings'
-import { unlink } from 'fs'
+import { rm } from 'node:fs/promises'
 
 describe('naturalBreaksManager', function () {
   let settings = null
@@ -60,12 +60,20 @@ describe('naturalBreaksManager', function () {
     naturalBreaksManager.idleTime.should.be.equal(0)
   })
 
-  afterEach(() => {
+  it('does not create a second timer when start() is called twice', () => {
+    naturalBreaksManager.stop()
+    naturalBreaksManager.start()
+    const timer = naturalBreaksManager.timer
+    naturalBreaksManager.start()
+    naturalBreaksManager.timer.should.be.equal(timer)
+  })
+
+  afterEach(async () => {
     naturalBreaksManager.stop()
     naturalBreaksManager = null
 
     if (settings) {
-      unlink(join(__dirname, '/test-settings-naturalBreaksManager.json'), (_) => {})
+      await rm(join(__dirname, '/test-settings-naturalBreaksManager.json'), { force: true })
       settings = null
     }
   })

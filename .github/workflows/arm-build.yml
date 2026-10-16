@@ -8,18 +8,22 @@ on:
 env:
   USE_SYSTEM_FPM: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
-    runs-on: buildjet-2vcpu-ubuntu-2204-arm
+    runs-on: ubuntu-24.04-arm
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '20.18.1'
-    - run: sudo apt update && sudo apt-get install --no-install-recommends -y ruby-full libarchive-tools
-    - run: sudo gem install fpm -v 1.15
-    - run: npm install npm -g
-    - run: npm install
-    - run: node_modules/.bin/electron-builder build
+    - name: Checkout
+      uses: actions/checkout@v6
+    - name: Install ARM build dependencies
+      run: sudo apt update && sudo apt-get install --no-install-recommends -y ruby-full libarchive-tools
+    - name: Install fpm
+      run: sudo gem install fpm -v 1.16.0
+    - name: Setup build environment
+      uses: ./.github/actions/setup-build
+    - name: Build packages
+      run: node_modules/.bin/electron-builder build
       env:
         GH_TOKEN: ${{ secrets.github_token }}

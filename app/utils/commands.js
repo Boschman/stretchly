@@ -1,5 +1,5 @@
-const { UntilMorning } = require('./untilMorning')
-const log = require('electron-log/main')
+import { UntilMorning } from './untilMorning.js'
+import log from 'electron-log/main.js'
 
 const allOptions = {
   title: {
@@ -11,7 +11,7 @@ const allOptions = {
   text: {
     long: '--text',
     short: '-t',
-    description: 'Specify text for next break (Long Break only)',
+    description: 'Specify text for next break (Long break only)',
     withValue: true
   },
   noskip: {
@@ -57,12 +57,21 @@ const allCommands = {
   toggle: {
     description: 'Pause/unpause breaks'
   },
+  postpone: {
+    description: 'Postpone the currently running break, when allowed'
+  },
+  skip: {
+    description: 'Skip the currently running break, when allowed'
+  },
+  finish: {
+    description: 'Finish the currently running break, when allowed'
+  },
   mini: {
-    description: 'Skip to the Mini Break, customize it',
+    description: 'Skip to the Mini break, customize it',
     options: [allOptions.title, allOptions.noskip, allOptions.wait]
   },
   long: {
-    description: 'Skip to the Long Break, customize it',
+    description: 'Skip to the Long break, customize it',
     options: [allOptions.text, allOptions.title, allOptions.noskip, allOptions.wait]
   },
   preferences: {
@@ -87,12 +96,24 @@ const allExamples = [{
   description: 'Pause breaks for one hour and twenty minutes'
 },
 {
+  cmd: 'stretchly postpone',
+  description: 'Postpone the currently running break using existing preferences'
+},
+{
+  cmd: 'stretchly skip',
+  description: 'Skip the currently running break using existing preferences'
+},
+{
+  cmd: 'stretchly finish',
+  description: 'Finish the break after its countdown in Manual Finish mode'
+},
+{
   cmd: 'stretchly mini -T "Stretch up!"',
-  description: 'Start a Mini Break, with the title "Stretch up!"'
+  description: 'Start a Mini break, with the title "Stretch up!"'
 },
 {
   cmd: 'stretchly long -T "Stretch up!" --noskip',
-  description: 'Set the next Break\'s title to "Stretch up!"'
+  description: 'Set the next break\'s title to "Stretch up!"'
 },
 {
   cmd: 'stretchly long -T "Stretch up!" -t "Go stretch!"',
@@ -311,4 +332,4 @@ function parseDuration (input) {
 
 const minToMs = 60000
 
-module.exports = Command
+export default Command

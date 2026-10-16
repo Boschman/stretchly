@@ -28,7 +28,9 @@
       "sounds": "סאָונדס:",
       "windChime": "ווינט־שפּיל",
       "colour": "פֿארבּיק",
-      "monochrome": "מאָנאָכראָם"
+      "monochrome": "מאָנאָכראָם",
+      "appearance": "אויס־זען:",
+      "autumnBeBlessed": "ברכה'דיגע הַארבּסט"
     },
     "about": {
       "version": "ווערסיאַ: ",
@@ -38,7 +40,8 @@
       "janH": "יאַן האָוואַנציק"
     },
     "heart": {
-      "loveStretchly": "האָב ליב איר סטרעטשלי?"
+      "loveStretchly": "האָב ליב איר סטרעטשלי?",
+      "syncPreferences": "סינכראָניזאַציע אָפּציעס"
     }
   },
   "longBreakIdeas": {

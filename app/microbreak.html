@@ -19,14 +19,19 @@
         <span id='progress-time' aria-hidden="true"></span>
       </div>
       <div>
-        <a id="postpone" class="tooltip top">
+        <a id="postpone" class="tooltip top hidden">
           <span data-i18next="break.postpone"></span>
           <img src="images/breaks/break-postpone.svg" />
           <span class="tiptext"></span>
         </a>
-        <a id="close" class="tooltip top">
+        <a id="close" class="tooltip top hidden">
           <span data-i18next="break.skip"></span>
           <img src="images/breaks/break-skip.svg" />
+          <span class="tiptext"></span>
+        </a>
+        <a id="finish" class="tooltip top hidden">
+          <span data-i18next="break.finish"></span>
+          <img src="images/breaks/break-finish.svg" />
           <span class="tiptext"></span>
         </a>
       </div>
@@ -34,4 +39,5 @@
       </div>
     </div>
   </body>
+  <script type="module" src="./microbreak-renderer.js"></script>
 </html>
