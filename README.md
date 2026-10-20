@@ -150,7 +150,7 @@ Clicking the *Stretchly* icon in your tray area will display the current status 
 
 <img src="tray.png" height="140">
 
-*Stretchly* is monitoring your idle time, so when you are idle for 5 minutes, breaks will be paused until you return. You can also skip breaks that are due while you have been idle for a shorter time, using *Skip break if idle for more than* in Preferences.
+*Stretchly* is monitoring your idle time, so when you are idle for 5 minutes, breaks will be paused until you return. With *Postpone break if idle for more than* in Preferences, a break that comes due while you have been idle for a shorter time, e.g. while watching a video, waits until you are active again and then comes after the usual postpone time.
 
 *Stretchly* is also monitoring Do Not Disturb mode, so breaks are paused when DnD mode is On.
 

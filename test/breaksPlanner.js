@@ -44,15 +44,15 @@ describe('breaksPlanner idle threshold', function () {
     emitted.should.deep.equal(['startMicrobreak'])
   })
 
-  it('skips a due break and plans the next one when idle beyond the threshold', () => {
+  it('holds a due break while idle beyond the threshold', () => {
     idleTime = 120000
     breaksPlanner.nextBreak()
-    vi.advanceTimersByTime(interval)
-    emitted.should.deep.equal(['updateToolTip'])
-    breaksPlanner.scheduler.reference.should.equal('startBreak')
+    vi.advanceTimersByTime(interval * 3)
+    emitted.should.not.include('startMicrobreak')
+    breaksPlanner.scheduler.reference.should.equal('holdBreak')
   })
 
-  it('skips the notification of a due break when idle beyond the threshold', () => {
+  it('holds the notification of a due break while idle beyond the threshold', () => {
     settings.set({ microbreakNotification: true, microbreakNotificationInterval: 500 })
     idleTime = 120000
     breaksPlanner.nextBreak()
@@ -60,13 +60,17 @@ describe('breaksPlanner idle threshold', function () {
     emitted.should.not.include('startMicrobreakNotification')
   })
 
-  it('counts a skipped Long break as taken', () => {
+  it('postpones a held break once active again, without using up a postpone', () => {
     idleTime = 120000
     breaksPlanner.nextBreak()
     vi.advanceTimersByTime(interval)
-    breaksPlanner.scheduler.reference.should.equal('startBreak')
-    vi.advanceTimersByTime(interval)
+    idleTime = 0
+    vi.advanceTimersByTime(settings.get('naturalBreaksCheckInterval'))
     breaksPlanner.scheduler.reference.should.equal('startMicrobreak')
+    breaksPlanner.postponesNumber.should.equal(0)
+    emitted.should.not.include('startMicrobreak')
+    vi.advanceTimersByTime(settings.get('microbreakPostponeTime'))
+    emitted.should.include('startMicrobreak')
   })
 
   afterEach(async () => {

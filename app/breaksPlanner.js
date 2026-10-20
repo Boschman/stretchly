@@ -161,9 +161,9 @@ class BreaksPlanner extends EventEmitter {
     this.scheduler.plan()
   }
 
-  postponeCurrentBreak () {
+  postponeCurrentBreak (isAutomatic = false) {
     this.scheduler.cancel()
-    this.postponesNumber += 1
+    if (!isAutomatic) this.postponesNumber += 1
     let postponeTime, eventName
     const scheduledBreakType = this._scheduledBreakType
     const notification = this.settings.get(`${scheduledBreakType}Notification`)
@@ -241,12 +241,24 @@ class BreaksPlanner extends EventEmitter {
 
   _emitBreakEvent (eventName) {
     if (this.naturalBreaksManager.isIdleBeyondBreakThreshold) {
-      log.info(`Stretchly: skipping ${eventName} because of idle time`)
-      this.nextBreak()
+      log.info(`Stretchly: holding ${eventName} because of idle time`)
+      this._holdBreak()
       this.emit('updateToolTip')
     } else {
       this.emit(eventName)
     }
+  }
+
+  _holdBreak () {
+    this.scheduler = new Scheduler(() => {
+      if (this.naturalBreaksManager.isIdleBeyondBreakThreshold) {
+        this._holdBreak()
+      } else {
+        log.info('Stretchly: postponing held break because user is active again')
+        this.postponeCurrentBreak(true)
+      }
+    }, this.settings.get('naturalBreaksCheckInterval'), 'holdBreak')
+    this.scheduler.plan()
   }
 
   correctScheduler () {
