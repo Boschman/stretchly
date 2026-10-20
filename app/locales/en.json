@@ -50,7 +50,7 @@
       "monitorIdleTime": "Monitor system idle time (breaks are paused if system is idle).",
       "breakIdleThreshold": "Postpone break if idle for more than",
       "monitorDnd": "Show breaks even in Do Not Disturb mode",
-      "canPauseForVideo": "Pause breaks while a video is playing",
+      "canPauseForVideo": "Pause breaks while a video is playing in the active window",
       "language": "Select language:",
       "restoreDefaults": "Restore defaults"
     },

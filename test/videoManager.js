@@ -1,25 +1,43 @@
 import { vi } from 'vitest'
 import 'chai/register-should'
 import { join } from 'path'
-import VideoManager, { hasVideoAssertion } from '../app/utils/videoManager'
+import VideoManager, { videoAssertionPids } from '../app/utils/videoManager'
 import Store from 'electron-store'
 import defaultSettings from '../app/utils/defaultSettings'
 import { rm } from 'node:fs/promises'
 
-const assertion = (type, name) => `   pid 3584(firefox): [0x00009cc20005a147] 00:00:33 ${type} named: "${name}"  \n`
+const firefox = 3584
+const chrome = 6305
+const assertion = (type, name, pid = firefox, app = 'firefox') => `   pid ${pid}(${app}): [0x00009cc20005a147] 00:00:33 ${type} named: "${name}"  \n`
 
 describe('videoManager', function () {
-  it('detects display sleep assertions of video playback', () => {
-    hasVideoAssertion(assertion('NoDisplaySleepAssertion', 'video-playing')).should.equal(true)
-    hasVideoAssertion(assertion('PreventUserIdleDisplaySleep', 'Video Wake Lock')).should.equal(true)
-    hasVideoAssertion(assertion('PreventUserIdleDisplaySleep', 'media playback')).should.equal(true)
+  it('finds the apps holding display sleep assertions of video playback', () => {
+    videoAssertionPids(assertion('NoDisplaySleepAssertion', 'video-playing')).should.deep.equal([firefox])
+    videoAssertionPids(assertion('PreventUserIdleDisplaySleep', 'media playback')).should.deep.equal([firefox])
+    videoAssertionPids(
+      assertion('NoDisplaySleepAssertion', 'video-playing') +
+      assertion('NoDisplaySleepAssertion', 'Video Wake Lock', chrome, 'Google Chrome')
+    ).should.deep.equal([firefox, chrome])
   })
 
   it('ignores audio playback and other display sleep assertions', () => {
-    hasVideoAssertion(assertion('NoIdleSleepAssertion', 'audio-playing')).should.equal(false)
-    hasVideoAssertion(assertion('PreventUserIdleSystemSleep', 'media playback')).should.equal(false)
-    hasVideoAssertion(assertion('PreventUserIdleDisplaySleep', 'Electron')).should.equal(false)
-    hasVideoAssertion('   PreventUserIdleDisplaySleep    1\n').should.equal(false)
+    videoAssertionPids(assertion('NoIdleSleepAssertion', 'audio-playing')).should.deep.equal([])
+    videoAssertionPids(assertion('PreventUserIdleSystemSleep', 'media playback')).should.deep.equal([])
+    videoAssertionPids(assertion('PreventUserIdleDisplaySleep', 'Electron')).should.deep.equal([])
+    videoAssertionPids('   PreventUserIdleDisplaySleep    1\n').should.deep.equal([])
+  })
+
+  it('only counts a video playing in the frontmost app', async () => {
+    const videoManager = new VideoManager({ get: () => false })
+    vi.spyOn(videoManager, '_assertions').mockResolvedValue(assertion('NoDisplaySleepAssertion', 'video-playing'))
+    const frontmostAppPid = vi.spyOn(videoManager, '_frontmostAppPid')
+    frontmostAppPid.mockResolvedValue(firefox)
+    const isPlayingInFront = await videoManager._isVideoPlaying()
+    frontmostAppPid.mockResolvedValue(chrome)
+    const isPlayingInBackground = await videoManager._isVideoPlaying()
+    isPlayingInFront.should.equal(true)
+    isPlayingInBackground.should.equal(false)
+    vi.restoreAllMocks()
   })
 
   describe('monitoring', function () {
