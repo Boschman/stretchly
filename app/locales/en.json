@@ -50,6 +50,7 @@
       "monitorIdleTime": "Monitor system idle time (breaks are paused if system is idle).",
       "breakIdleThreshold": "Postpone break if idle for more than",
       "monitorDnd": "Show breaks even in Do Not Disturb mode",
+      "canPauseForVideo": "Pause breaks while a video is playing",
       "language": "Select language:",
       "restoreDefaults": "Restore defaults"
     },
@@ -211,6 +212,7 @@
     "indefinitely": "Indefinitely",
     "dndMode": "Do Not Disturb is on",
     "appExclusion": "App exclusion rule",
+    "videoPlaying": "Video is playing",
     "nextLongBreak": "Next Long break",
     "nextMiniBreak": "Next Mini break",
     "afterMiniBreak_one": "after {{count}} Mini break",

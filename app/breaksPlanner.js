@@ -3,6 +3,7 @@ import EventEmitter from 'events'
 import NaturalBreaksManager from './utils/naturalBreaksManager.js'
 import DndManager from './utils/dndManager.js'
 import AppExclusionsManager from './utils/appExclusionsManager.js'
+import VideoManager from './utils/videoManager.js'
 import log from 'electron-log/main.js'
 
 class BreaksPlanner extends EventEmitter {
@@ -17,6 +18,7 @@ class BreaksPlanner extends EventEmitter {
     this.naturalBreaksManager = new NaturalBreaksManager(settings)
     this.dndManager = new DndManager(settings)
     this.appExclusionsManager = new AppExclusionsManager(settings)
+    this.videoManager = new VideoManager(settings)
 
     this.on('microbreakStarted', (shouldPlaySound) => {
       const interval = this.settings.get('microbreakDuration')
@@ -38,7 +40,7 @@ class BreaksPlanner extends EventEmitter {
     })
 
     this.naturalBreaksManager.on('naturalBreakFinished', () => {
-      if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak' && !this.dndManager.isOnDnd) {
+      if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak' && !this.dndManager.isOnDnd && !this.videoManager.isOnVideo) {
         this.reset()
         log.info('Stretchly: resuming breaks after idle time')
         this.emit('updateToolTip')
@@ -59,6 +61,22 @@ class BreaksPlanner extends EventEmitter {
       if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak') {
         this.reset()
         log.info('Stretchly: resuming breaks for Do Not Distrub')
+        this.emit('updateToolTip')
+      }
+    })
+
+    this.videoManager.on('videoPlaying', () => {
+      if (this._isSchedulingBreaks && this.scheduler.reference !== null) {
+        this.clear()
+        log.info('Stretchly: pausing breaks while a video is playing')
+        this.emit('updateToolTip')
+      }
+    })
+
+    this.videoManager.on('videoFinished', () => {
+      if (this._isSchedulingBreaks && !this.dndManager.isOnDnd && !this.appExclusionsManager.isSchedulerCleared) {
+        this.reset()
+        log.info('Stretchly: resuming breaks after video')
         this.emit('updateToolTip')
       }
     })
@@ -220,6 +238,7 @@ class BreaksPlanner extends EventEmitter {
     this.naturalBreaksManager.stop()
     this.dndManager.stop()
     this.appExclusionsManager.stop()
+    this.videoManager.stop()
     if (milliseconds !== 1) {
       this.scheduler = new Scheduler(() => this.emit('resumeBreaks'), milliseconds, 'resumeBreaks')
       this.scheduler.plan()
@@ -235,6 +254,7 @@ class BreaksPlanner extends EventEmitter {
       this.pollersSuspended = false
       if (this.settings.get('naturalBreaks')) this.naturalBreaksManager.start()
       if (this.settings.get('monitorDnd')) this.dndManager.start()
+      if (this.settings.get('canPauseForVideo')) this.videoManager.start()
       this.appExclusionsManager.reinitialize(this.settings)
     }
   }
@@ -294,14 +314,30 @@ class BreaksPlanner extends EventEmitter {
   }
 
   doNotDisturb (shouldUse) {
+    this._monitor(this.dndManager, shouldUse)
+  }
+
+  pauseForVideo (shouldUse) {
+    this._monitor(this.videoManager, shouldUse)
+  }
+
+  _monitor (manager, shouldUse) {
     if (shouldUse) {
-      this.dndManager.start()
+      manager.start()
     } else {
-      this.dndManager.stop()
+      manager.stop()
       if (!this.isPaused && this.scheduler.reference === null) {
         this.reset()
       }
     }
+  }
+
+  get _isSchedulingBreaks () {
+    return !this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak'
+  }
+
+  get isPausedForVideo () {
+    return this.videoManager.isOnVideo && this.scheduler?.reference === null
   }
 
   get timeToNextBreak () {

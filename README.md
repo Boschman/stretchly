@@ -154,6 +154,8 @@ Clicking the *Stretchly* icon in your tray area will display the current status 
 
 *Stretchly* is also monitoring Do Not Disturb mode, so breaks are paused when DnD mode is On.
 
+On macOS, breaks are also paused while a video is playing, e.g. in a browser or video player, and the break timer starts fresh when the video stops. You can turn this off with *Pause breaks while a video is playing* in Preferences.
+
 *Stretchly* follows the theme of your system and is also available in dark mode.
 
 <img src="dark.png" height="340">
@@ -222,6 +224,7 @@ Here are the preferences editable via the app. If values in the app does not sui
 - `trayIconStyle` - icon style for menubar: default, time to break, or progress to break
 - `silentNotifications` - enable sounds
 - `monitorDnd` - monitor DND mode
+- `canPauseForVideo` - pause breaks while a video is playing (macOS)
 - `checkNewVersion` - check for new versions
 
 #### Editing break ideas
@@ -311,6 +314,9 @@ You can also set `naturalBreaksCheckInterval` in milliseconds: how often idle ti
 
 #### Do Not Disturb check interval
 In the preferences file, set `monitorDndCheckInterval` in milliseconds: how often Do Not Disturb status is checked. A higher number means lower CPU and energy usage, but slightly less responsive detection. On macOS and Linux this check can be relatively expensive, so increasing it can noticeably lower energy usage. Default value is `2000` which is 2 seconds.
+
+#### Video check interval
+In the preferences file, set `videoCheckInterval` in milliseconds: how often *Stretchly* checks whether a video is playing (macOS only). A higher number means lower CPU and energy usage, but slightly less responsive detection. Default value is `2000` which is 2 seconds.
 
 #### Volume for break sounds [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 In the preferences file, set `volume` to your preferred value. Default value is `1`, which is 100% volume. Set it, for example, to `0.61` for 61% volume. This applies to both start and end break sounds.

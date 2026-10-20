@@ -50,6 +50,8 @@ export default {
   silentNotifications: false,
   monitorDnd: true,
   monitorDndCheckInterval: 2000,
+  canPauseForVideo: true,
+  videoCheckInterval: 2000,
   miniBreakStartSound: 'silence',
   longBreakStartSound: 'silence',
   themeSource: 'system',

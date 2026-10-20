@@ -400,6 +400,7 @@ async function initialize (isAppStart = true) {
     breakPlanner.clear()
     breakPlanner.appExclusionsManager.reinitialize(settings)
     breakPlanner.doNotDisturb(settings.get('monitorDnd'))
+    breakPlanner.pauseForVideo(settings.get('canPauseForVideo'))
     breakPlanner.naturalBreaks(settings.get('naturalBreaks'))
     breakPlanner.nextBreak()
   }
@@ -591,6 +592,7 @@ function trayIconPath () {
     paused:
       breakPlanner.isPaused ||
       breakPlanner.dndManager.isOnDnd ||
+      breakPlanner.isPausedForVideo ||
       breakPlanner.naturalBreaksManager.isSchedulerCleared ||
       breakPlanner.appExclusionsManager.isSchedulerCleared,
     monochrome: settings.get('useMonochromeTrayIcon'),
@@ -1443,7 +1445,7 @@ function getTrayMenuTemplate () {
     return trayMenu
   }
 
-  if (!(breakPlanner.isPaused || breakPlanner.dndManager.isOnDnd || breakPlanner.appExclusionsManager.isSchedulerCleared)) {
+  if (!(breakPlanner.isPaused || breakPlanner.dndManager.isOnDnd || breakPlanner.isPausedForVideo || breakPlanner.appExclusionsManager.isSchedulerCleared)) {
     let submenu = []
     if (settings.get('microbreak')) {
       submenu = submenu.concat([{
@@ -1619,6 +1621,10 @@ ipcMain.on('save-setting', function (event, key, value) {
 
   if (key === 'monitorDnd') {
     breakPlanner.doNotDisturb(value)
+  }
+
+  if (key === 'canPauseForVideo') {
+    breakPlanner.pauseForVideo(value)
   }
 
   if (key === 'language') {
