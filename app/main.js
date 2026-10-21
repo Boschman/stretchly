@@ -600,7 +600,9 @@ function trayIconPath () {
     darkMode: useDarkColors,
     platform: process.platform,
     trayIconStyle: settings.get('trayIconStyle'),
-    timeToBreak: minutesRemaining(breakPlanner.timeToNextBreak),
+    timeToBreak: minutesRemaining(settings.get('trayIconStyle') === 'timeToLongBreak'
+      ? breakPlanner.timeToNextLongBreak
+      : breakPlanner.timeToNextBreak),
     percentage: breakPlanner.progressPercentage,
     reference: breakPlanner.scheduler.reference
   }

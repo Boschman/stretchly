@@ -64,6 +64,7 @@ function formatKeyboardShortcut (keyboardShortcut) {
 }
 
 function minutesRemaining (milliseconds) {
+  if (milliseconds === null) return null
   return Math.round(milliseconds / 60000.0)
 }
 

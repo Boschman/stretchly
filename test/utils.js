@@ -166,6 +166,9 @@ describe('Others', () => {
     it('ten minutes remaining', () => {
       minutesRemaining(600 * 1000).should.equal(10)
     })
+    it('no time remaining when nothing is scheduled', () => {
+      expect(minutesRemaining(null)).to.equal(null)
+    })
   })
 
   describe('shouldShowNotificationTitle', () => {

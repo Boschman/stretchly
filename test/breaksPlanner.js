@@ -1,4 +1,4 @@
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 import 'chai/register-should'
 import { join } from 'path'
 import BreaksPlanner from '../app/breaksPlanner'
@@ -109,6 +109,33 @@ describe('breaksPlanner', function () {
     await vi.advanceTimersByTimeAsync(videoCheckInterval)
     breaksPlanner.naturalBreaksManager.emit('naturalBreakFinished')
     breaksPlanner.isPausedForVideo.should.equal(true)
+  })
+
+  it('knows when the long break starts after the mini breaks before it', () => {
+    settings.set({ breakInterval: 2, microbreakDuration: 200 })
+    breaksPlanner.on('startMicrobreak', () => breaksPlanner.emit('microbreakStarted'))
+    breaksPlanner.on('finishMicrobreak', () => breaksPlanner.nextBreak())
+    breaksPlanner.nextBreak()
+    vi.advanceTimersByTime(breaksPlanner.timeToNextLongBreak - 1)
+    emitted.should.not.include('startBreak')
+    vi.advanceTimersByTime(1)
+    emitted.should.include('startBreak')
+  })
+
+  it('knows when the next long break starts, including its notification', () => {
+    settings.set({ microbreak: false, breakNotification: true, breakNotificationInterval: 300 })
+    breaksPlanner.on('startBreakNotification', () => breaksPlanner.nextBreakAfterNotification())
+    breaksPlanner.nextBreak()
+    vi.advanceTimersByTime(breaksPlanner.timeToNextLongBreak - 1)
+    emitted.should.not.include('startBreak')
+    vi.advanceTimersByTime(1)
+    emitted.should.include('startBreak')
+  })
+
+  it('has no time to the long break when long breaks are off', () => {
+    settings.set({ break: false })
+    breaksPlanner.nextBreak()
+    expect(breaksPlanner.timeToNextLongBreak).toBeNull()
   })
 
   afterEach(async () => {

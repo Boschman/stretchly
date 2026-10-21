@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - advanced preferences for custom break sounds
 - option to postpone breaks while idle for longer than a set time, e.g. while watching a video
 - pause breaks while a video is playing in the active window on macOS, on by default
+- tray icon style showing the minutes left until the next Long break
 
 ### Fixed
 - fix debug file and folder links when paths contain HTML special characters

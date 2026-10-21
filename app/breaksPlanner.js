@@ -358,6 +358,16 @@ class BreaksPlanner extends EventEmitter {
     return null
   }
 
+  get timeToNextLongBreak () {
+    const timeToNextBreak = this.timeToNextBreak
+    if (timeToNextBreak === null || !this.settings.get('break')) return null
+    const reference = this.scheduler.reference
+    if (reference === 'startBreak' || reference === 'startBreakNotification') return timeToNextBreak
+    const breakInterval = this.settings.get('breakInterval') + 1
+    const microbreaksLeft = breakInterval - this.breakNumber % breakInterval
+    return timeToNextBreak + microbreaksLeft * (this.settings.get('microbreakDuration') + this.settings.get('microbreakInterval'))
+  }
+
   get _progressInterval () {
     if (!this.scheduler) return null
     const { reference, delay } = this.scheduler

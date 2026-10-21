@@ -95,6 +95,7 @@
       "trayIconStyleLabel": "Style:",
       "trayIconStyleDefault": "Default",
       "trayIconStyleTime": "Time to break",
+      "trayIconStyleTimeToLongBreak": "Time to long break",
       "trayIconStyleProgress": "Progress to break"
     },
     "about": {

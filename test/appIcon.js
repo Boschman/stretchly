@@ -362,6 +362,36 @@ describe('appIcon', function () {
     appIcon.trayIconFileName.should.equal('trayMacMonochromeNumber99Template.png')
   })
 
+  it('adds Number for time to long break in tray', function () {
+    const params = {
+      paused: false,
+      monochrome: false,
+      inverted: false,
+      darkMode: false,
+      platform: 'win32',
+      trayIconStyle: 'timeToLongBreak',
+      timeToBreak: 25,
+      reference: 'startMicrobreak'
+    }
+    const appIcon = new AppIcon(params)
+    appIcon.trayIconFileName.should.equal('trayNumber25.ico')
+  })
+
+  it('does not add Number when there is no time to break', function () {
+    const params = {
+      paused: false,
+      monochrome: false,
+      inverted: false,
+      darkMode: false,
+      platform: 'linux',
+      trayIconStyle: 'timeToLongBreak',
+      timeToBreak: null,
+      reference: 'startMicrobreak'
+    }
+    const appIcon = new AppIcon(params)
+    appIcon.trayIconFileName.should.equal('tray.png')
+  })
+
   it('trayIconFileName works for light mode on Windows', function () {
     const params = {
       paused: false,

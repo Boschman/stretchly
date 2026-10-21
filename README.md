@@ -221,7 +221,7 @@ Here are the preferences editable via the app. If values in the app does not sui
 - `allScreens` - show breaks on all screens
 - `language` - language
 - `useMonochromeTrayIcon` - use monochrome icon
-- `trayIconStyle` - icon style for menubar: default, time to break, or progress to break
+- `trayIconStyle` - icon style for menubar: default, time to break, time to long break, or progress to break
 - `silentNotifications` - enable sounds
 - `monitorDnd` - monitor DND mode
 - `canPauseForVideo` - pause breaks while a video is playing in the active window (macOS)
