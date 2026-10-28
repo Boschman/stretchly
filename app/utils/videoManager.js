@@ -6,6 +6,8 @@ import { promisify } from 'node:util'
 const asyncExecFile = promisify(execFile)
 // Display sleep assertions held during playback, e.g. Firefox "video-playing" or Chrome "Video Wake Lock"
 const videoAssertion = /pid (\d+)\(.*\): .* (?:PreventUserIdleDisplaySleep|NoDisplaySleepAssertion) named: "[^"]*(?:video|playback)[^"]*"/gi
+// Held by FaceTime for the whole call
+const callAssertion = /pid \d+\(.*\): .* PreventUserIdleDisplaySleep named: "Ongoing A\/V conference"/
 
 export function videoAssertionPids (assertions) {
   return [...assertions.matchAll(videoAssertion)].map(match => Number(match[1]))
@@ -39,7 +41,9 @@ class VideoManager extends EventEmitter {
 
   async _isVideoPlaying () {
     try {
-      const pids = videoAssertionPids(await this._assertions())
+      const assertions = await this._assertions()
+      if (callAssertion.test(assertions)) return true
+      const pids = videoAssertionPids(assertions)
       return pids.length > 0 && pids.includes(await this._frontmostAppPid())
     } catch (e) {
       if (!this.hasLoggedError) {

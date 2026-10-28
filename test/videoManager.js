@@ -40,6 +40,15 @@ describe('videoManager', function () {
     vi.restoreAllMocks()
   })
 
+  it('counts a FaceTime call, also when FaceTime is not in front', async () => {
+    const videoManager = new VideoManager({ get: () => false })
+    vi.spyOn(videoManager, '_assertions').mockResolvedValue(assertion('PreventUserIdleDisplaySleep', 'Ongoing A/V conference', 79635, 'FaceTime'))
+    vi.spyOn(videoManager, '_frontmostAppPid').mockResolvedValue(firefox)
+    const isOnCall = await videoManager._isVideoPlaying()
+    isOnCall.should.equal(true)
+    vi.restoreAllMocks()
+  })
+
   describe('monitoring', function () {
     const platform = Object.getOwnPropertyDescriptor(process, 'platform')
     let settings = null

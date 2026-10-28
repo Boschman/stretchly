@@ -154,7 +154,7 @@ Clicking the *Stretchly* icon in your tray area will display the current status 
 
 *Stretchly* is also monitoring Do Not Disturb mode, so breaks are paused when DnD mode is On.
 
-On macOS, breaks are also paused while a video is playing in the active window, e.g. in a browser or video player, and the break timer starts fresh when the video stops. A video playing in an app you are not using does not pause breaks. You can turn this off with *Pause breaks while a video is playing in the active window* in Preferences.
+On macOS, breaks are also paused during a FaceTime call and while a video is playing in the active window, e.g. in a browser or video player, and the break timer starts fresh when the call or video ends. A video playing in an app you are not using does not pause breaks, but a FaceTime call does, so you can use other apps during the call. You can turn this off with *Pause breaks during a FaceTime call or while a video is playing in the active window* in Preferences.
 
 *Stretchly* follows the theme of your system and is also available in dark mode.
 
@@ -224,7 +224,7 @@ Here are the preferences editable via the app. If values in the app does not sui
 - `trayIconStyle` - icon style for menubar: default, time to break, time to long break, or progress to break
 - `silentNotifications` - enable sounds
 - `monitorDnd` - monitor DND mode
-- `canPauseForVideo` - pause breaks while a video is playing in the active window (macOS)
+- `canPauseForVideo` - pause breaks during a FaceTime call or while a video is playing in the active window (macOS)
 - `checkNewVersion` - check for new versions
 
 #### Editing break ideas
